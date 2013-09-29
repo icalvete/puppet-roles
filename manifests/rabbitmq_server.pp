@@ -17,6 +17,6 @@ class roles::rabbitmq_server (
     repo_user     => false,
     repo_pass     => false,
     repo_path     => 'releases/rabbitmq-server/v3.1.5',
-    repo_resource => 'rabbitmq-server_3.1.5-1_all.deb'
+    repo_resource => $repo_resource
   }
 }
