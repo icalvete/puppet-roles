@@ -1,22 +1,22 @@
 class roles::elasticsearch_server (
 
-  $repo_scheme   = undef,
-  $repo_domain   = undef,
-  $repo_port     = undef,
-  $repo_user     = undef,
-  $repo_pass     = undef,
-  $repo_path     = undef,
-  $repo_resource = undef
+  $repo_scheme   = 'http',
+  $repo_domain   = 'download.elasticsearch.org',
+  $repo_port     = false,
+  $repo_user     = false,
+  $repo_pass     = false,
+  $repo_path     = 'elasticsearch/elasticsearch',
+  $repo_resource = 'elasticsearch-0.90.5.deb'
 
 ) inherits roles {
-  
+
   class {'elasticsearch':
-    repo_scheme   => 'http',
-    repo_domain   => 'download.elasticsearch.org',
-    repo_port     => false,
-    repo_user     => false,
-    repo_pass     => false,
-    repo_path     => 'elasticsearch/elasticsearch',
-    repo_resource => 'elasticsearch-0.90.5.deb'
+    repo_scheme   => $repo_scheme,
+    repo_domain   => $repo_domain,
+    repo_port     => $repo_port,
+    repo_user     => $repo_user,
+    repo_pass     => $repo_pass,
+    repo_path     => $repo_path,
+    repo_resource => $repo_resource
   }
 }
