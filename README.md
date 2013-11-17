@@ -1,6 +1,5 @@
 #puppet-roles
 
-
  [![Build Status](https://secure.travis-ci.org/icalvete/puppet-roles.png)](http://travis-ci.org/icalvete/puppet-roles)
 
 #Actions
