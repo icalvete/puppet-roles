@@ -19,7 +19,7 @@ node ''zoth-ommog.smartpurposes.net' inherits sp_defaults {
   include roles::puppet_db
   include roles::puppet_dashboard
   include roles::syslog_sender_server
-  include roles::mysql_serve
+  include roles::mysql_server
 }
 ```
 
