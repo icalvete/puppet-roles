@@ -10,6 +10,10 @@ class roles::rabbitmq_server (
 
 ) inherits roles {
 
+  if ! $repo_resource {
+    fail('repo_resource parameter must be defined')
+  }
+
   class {'rabbitmq':
     repo_scheme   => $repo_scheme,
     repo_domain   => $repo_domain,
