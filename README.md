@@ -24,4 +24,4 @@ node ''zoth-ommog.smartpurposes.net' inherits sp_defaults {
 
 ##Authors:
  
- Israel Calvete Talavera <Calveteicalvete@gmail.com>
+ Israel Calvete Talavera <icalvete@gmail.com>
