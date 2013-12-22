@@ -16,7 +16,7 @@ class roles::ldap_server (
     }
   }
 
-  class {'ds389':
+  class {'389ds':
     backup_local   => $backup_local,
     cluster        => $cluster,
     cluster_peer   => $cluster_peer,
