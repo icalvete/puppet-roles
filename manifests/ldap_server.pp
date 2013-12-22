@@ -1,12 +1,12 @@
 class roles::ldap_server (
-  
+
   $backup_local   = true,
   $cluster        = false,
   $cluster_peer   = undef,
   $replication_id = undef
 
 ) inherits roles {
-  
+
   if $cluster {
     if ! $cluster_peer {
       fail('Cluster node needs a peer. Set cluster_peer param.')
