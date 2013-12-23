@@ -6,7 +6,8 @@ class roles::jenkins_server (
   $repo_user     = false,
   $repo_pass     = false,
   $repo_resource = undef,
-  $cluster       = false
+  $cluster       = false,
+  $ldap          = false
 
 ) inherits roles {
 
@@ -34,6 +35,7 @@ class roles::jenkins_server (
     repo_pass     => false,
     repo_path     => $repo_path,
     repo_resource => $repo_resource,
-    cluster       => $cluster
+    cluster       => $cluster,
+    ldap          => $ldap
   }
 }
