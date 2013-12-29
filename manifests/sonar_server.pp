@@ -7,7 +7,8 @@ class roles::sonar_server (
   $repo_pass     = false,
   $repo_path     = false,
   $repo_resource = undef,
-  $plugins       = undef
+  $plugins       = undef,
+  $ldap          = false
 
 ) inherits roles {
 
@@ -23,6 +24,7 @@ class roles::sonar_server (
     repo_pass     => false,
     repo_path     => $repo_path,
     repo_resource => $repo_resource,
-    plugins       => $plugins
+    plugins       => $plugins,
+    ldap          => $ldap
   }
 }
