@@ -8,6 +8,7 @@ class roles::jenkins_server (
   $repo_resource = undef,
   $cluster       = false,
   $ldap          = false,
+  $ssl           = false,
   $sonar         = false
 
 ) inherits roles {
@@ -38,6 +39,7 @@ class roles::jenkins_server (
     repo_resource => $repo_resource,
     cluster       => $cluster,
     ldap          => $ldap,
+    ssl           => $ssl,
     sonar         => $sonar
   }
 }
