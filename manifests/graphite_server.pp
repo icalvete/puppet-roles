@@ -10,6 +10,20 @@ class roles::graphite_server (
 
 ) {
 
+  include graphite::params
+
+  exec {'graphite_document_root':
+    command => "/bin/mkdir -p ${graphite::params::install_path}/${graphite::params::graphite_dirname}/webapp",
+    unless  => "/usr/bin/test -d ${graphite::params::install_path}/${graphite::params::graphite_dirname}/webapp",
+    before  => Class['roles::apache2_server']
+  }
+
+  exec {'graphite_log_root':
+    command => "/bin/mkdir -p ${graphite::params::install_path}/${graphite::params::graphite_dirname}/storage/log/webapp",
+    unless  => "/usr/bin/test -d ${graphite::params::install_path}/${graphite::params::graphite_dirname}/storage/log/webapp",
+    before  => Class['roles::apache2_server']
+  }
+
   include roles::apache2_server
 
   apache2::module { 'wsgi':
