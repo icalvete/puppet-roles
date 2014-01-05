@@ -32,8 +32,8 @@ class roles::graphite_server (
     require => Class['roles::apache2_server']
   }
 
-  apache2::site{'graphite.vhost':
-    source              => 'graphite/web/apache2/graphite.vhost.erb',
+  apache2::site{'graphite.vhost.conf':
+    source              => 'graphite/web/apache2/graphite.vhost.conf.erb',
     include_from_source => 'graphite::params',
     require             => Class['roles::apache2_server']
   }
