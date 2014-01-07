@@ -17,9 +17,9 @@ class roles::rabbitmq_server (
   class {'rabbitmq':
     repo_scheme   => $repo_scheme,
     repo_domain   => $repo_domain,
-    repo_port     => false,
-    repo_user     => false,
-    repo_pass     => false,
+    repo_port     => $repo_port,
+    repo_user     => $repo_user,
+    repo_pass     => $repo_pass,
     repo_path     => $repo_path,
     repo_resource => $repo_resource
   }
