@@ -2,13 +2,15 @@ class roles::apache2_server (
 
   $ssl       = true,
   $passenger = true,
+  $phalcon   = false
 
 ) inherits roles {
 
   include apache2
 
   class {'php5':
-    fpm => true
+    fpm     => true,
+    phalcon => $phalcon
   }
 
   if $ssl {
