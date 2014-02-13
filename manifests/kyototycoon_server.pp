@@ -5,6 +5,6 @@ class roles::kyototycoon_server (
 ) inherits roles {
 
   class {'kyototycoon':
-    memcached => $memcached 
+    memcached => $memcached
   }
 }
