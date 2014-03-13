@@ -3,8 +3,8 @@ class roles::sonar_runner (
   $repo_scheme   = undef,
   $repo_domain   = undef,
   $repo_port     = false,
-  $repo_user     = false,
-  $repo_pass     = false,
+  $repo_user     = undef,
+  $repo_pass     = undef,
   $repo_path     = undef,
   $repo_resource = undef,
 
