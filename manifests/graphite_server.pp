@@ -7,6 +7,7 @@ class roles::graphite_server (
   $amqp_port     = hiera('graphite_amqp_port'),
   $amqp_user     = hiera('graphite_amqp_user'),
   $amqp_password = hiera('graphite_amqp_pass'),
+  $ldap          = false
 
 ) {
 
@@ -70,12 +71,13 @@ class roles::graphite_server (
   }
 
   class {'graphite::web':
+    ldap    => $ldap,
     require => Class['graphite::carbon']
   }
 
-  graphite::carbon::retentions { 'pruebas_retention':
-    pattern    => '^stats.*',
-    retentions => '10s:1d,1min:7d,10min:5y',
+  graphite::carbon::retentions { 'matcher_retention':
+    pattern    => '^matcher\..*\.stats\..*',
+    retentions => '1d:5y',
     require    => Class['graphite::whisper'],
   }
 
