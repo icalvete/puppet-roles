@@ -1,12 +1,15 @@
 class roles::apache2_server (
 
-  $ssl       = true,
-  $passenger = true,
-  $phalcon   = false
+  $ssl         = true,
+  $passenger   = true,
+  $phalcon     = false,
+  $environment = undef
 
 ) inherits roles {
 
-  include apache2
+  class {'apache2':
+    environment => $environment
+  }
 
   class {'php5':
     fpm     => true,
