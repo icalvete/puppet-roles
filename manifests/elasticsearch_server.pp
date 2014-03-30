@@ -6,7 +6,7 @@ class roles::elasticsearch_server (
   $repo_user     = false,
   $repo_pass     = false,
   $repo_path     = 'elasticsearch/elasticsearch',
-  $repo_resource = 'elasticsearch-0.90.5.deb'
+  $repo_resource = 'elasticsearch-1.1.0.deb'
 
 ) inherits roles {
 
