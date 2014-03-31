@@ -12,8 +12,9 @@ class roles::apache2_server (
   }
 
   class {'php5':
-    fpm     => true,
-    phalcon => $phalcon
+    fpm         => true,
+    phalcon     => $phalcon,
+    environment => $environment
   }
 
   if $ssl {
