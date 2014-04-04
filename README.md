@@ -13,7 +13,7 @@
 ##Example:
 
 ```puppet
-node ''zoth-ommog.smartpurposes.net' inherits sp_defaults {
+node 'zoth-ommog.smartpurposes.net' inherits sp_defaults {
   include roles::puppet_master
   include roles::puppet_db
   include roles::puppet_dashboard
