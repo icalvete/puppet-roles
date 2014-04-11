@@ -1,9 +1,11 @@
 class roles::apache2_server (
 
-  $ssl         = true,
-  $passenger   = true,
-  $phalcon     = false,
-  $environment = undef
+  $ssl               = true,
+  $passenger         = true,
+  $phalcon           = false,
+  $environment       = undef,
+  $file_uploads      = undef,
+  $file_uploads_size = undef
 
 ) inherits roles {
 
@@ -12,8 +14,11 @@ class roles::apache2_server (
   }
 
   class {'php5':
-    fpm     => true,
-    phalcon => $phalcon
+    fpm               => true,
+    phalcon           => $phalcon,
+    environment       => $environment,
+    file_uploads      => $file_uploads,
+    file_uploads_size => $file_uploads_size
   }
 
   if $ssl {
