@@ -11,6 +11,8 @@ class roles::elasticsearch_server (
 
 ) inherits roles {
 
+  realize Package['curl']
+
   class {'elasticsearch':
     repo_scheme   => $repo_scheme,
     repo_domain   => $repo_domain,
