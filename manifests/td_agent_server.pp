@@ -1,5 +1,11 @@
-class roles::td_agent_server inherits roles {
+class roles::td_agent_server (
+
+  $elasticsearch_host = undef
+
+) inherits roles {
 
   include fluentd
-  include fluentd::td-agent
+  class {'fluentd::td-agent':
+    elasticsearch_host => $elasticsearch_host
+  }
 }
