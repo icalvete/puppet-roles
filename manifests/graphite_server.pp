@@ -1,7 +1,7 @@
 class roles::graphite_server (
 
   $org_domain    = undef,
-  $server_alias  = undef,
+  $server_alias  = ['graphite'],
   $htpasswd_file = hiera('htpasswd_file'),
   $htpasswd_user = 'graphite',
   $htpasswd_pass = 'gr4ph1t3',
@@ -73,8 +73,9 @@ class roles::graphite_server (
   }
 
   class {'graphite::web':
-    ldap    => $ldap,
-    require => Class['graphite::carbon']
+    server_alias => $server_alias,
+    ldap         => $ldap,
+    require      => Class['graphite::carbon']
   }
 
   graphite::carbon::retentions { 'matcher_retention':
