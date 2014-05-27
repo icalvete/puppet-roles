@@ -1,5 +1,7 @@
 class roles::graphite_server (
 
+  $org_domain    = undef,
+  $server_alias  = undef,
   $htpasswd_file = hiera('htpasswd_file'),
   $htpasswd_user = 'graphite',
   $htpasswd_pass = 'gr4ph1t3',
