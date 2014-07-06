@@ -17,6 +17,10 @@ class roles::apache2_server (
     file_uploads_size => $file_uploads_size
   }
 
+  apache2::module {'headers':
+    require => Class['apache2::install']
+  }
+
   if $ssl {
 
     apache2::module {'ssl':
