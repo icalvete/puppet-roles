@@ -7,7 +7,9 @@ class roles::elasticsearch_server (
   $repo_pass     = false,
   $repo_path     = 'elasticsearch/elasticsearch',
   $repo_resource = 'elasticsearch-1.1.1.deb',
-  $cluster       = undef
+  $cluster       = undef,
+  $jetty         = undef,
+  $template      = undef
 
 ) inherits roles {
 
@@ -21,6 +23,8 @@ class roles::elasticsearch_server (
     repo_pass     => $repo_pass,
     repo_path     => $repo_path,
     repo_resource => $repo_resource,
-    cluster       => $cluster
+    cluster       => $cluster,
+    jetty         => $jetty,
+    template      => $template
   }
 }
