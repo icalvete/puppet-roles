@@ -1,4 +1,10 @@
-class roles::mongodb_server inherits roles {
+class roles::mongodb_server (
 
-  class {'mongodb':}
+  $backup = undef
+
+) inherits roles {
+
+  class {'mongodb':
+    backup => $backup
+  }
 }
