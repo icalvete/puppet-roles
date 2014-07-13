@@ -6,7 +6,7 @@ class roles::elasticsearch_server (
   $repo_user     = false,
   $repo_pass     = false,
   $repo_path     = 'elasticsearch/elasticsearch',
-  $repo_resource = 'elasticsearch-1.1.1.deb',
+  $repo_resource = undef,
   $cluster       = undef,
   $jetty         = undef,
   $apache        = undef,
