@@ -38,4 +38,10 @@ class roles::apache2_server (
     }
 
   }
+
+  if defined('check_mk::agent') {
+    check_mk::agent::plugin{'apache_status':
+      require => Class['check_mk::agent::install']
+    }
+  }
 }
