@@ -1,6 +1,7 @@
 class roles::graphite_server (
 
   $org_domain    = undef,
+  $server_name   = undef,
   $server_alias  = ['graphite'],
   $htpasswd_file = hiera('htpasswd_file'),
   $htpasswd_user = 'graphite',
@@ -73,6 +74,7 @@ class roles::graphite_server (
   }
 
   class {'graphite::web':
+    server_name  => $server_name,
     server_alias => $server_alias,
     ldap         => $ldap,
     require      => Class['graphite::carbon']
