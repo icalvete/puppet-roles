@@ -4,7 +4,8 @@ class roles::apache2_server (
   $passenger         = true,
   $phalcon           = false,
   $file_uploads      = undef,
-  $file_uploads_size = undef
+  $file_uploads_size = undef,
+  $wsgi              = undef
 
 ) inherits roles {
 
@@ -34,6 +35,14 @@ class roles::apache2_server (
     }
 
     apache2::module {'passenger':
+      require => Class['apache2::install']
+    }
+
+  }
+
+  if $wsgi {
+    apache2::module {'wsgi':
+      package => 'libapache2-mod-wsgi',
       require => Class['apache2::install']
     }
 
