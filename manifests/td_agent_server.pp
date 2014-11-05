@@ -6,8 +6,12 @@ class roles::td_agent_server (
 ) inherits roles {
 
   include fluentd
+
   class {'fluentd::td-agent':
-    config_template    => $config_template,
     elasticsearch_host => $elasticsearch_host
+  }
+
+  if $config_template {
+    fluentd::td-agent::add_config{$config_template:}
   }
 }
