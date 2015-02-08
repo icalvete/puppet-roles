@@ -17,6 +17,7 @@ class roles::elasticsearch_server (
   $aws_secret_access_key    = undef,
   $aws_region               = undef,
   $aws_bucket               = undef,
+  $backup = undef
 
 ) inherits roles {
 
@@ -47,18 +48,23 @@ class roles::elasticsearch_server (
   }
 
   class {'elasticsearch':
-    repo_scheme   => $repo_scheme,
-    repo_domain   => $repo_domain,
-    repo_port     => $repo_port,
-    repo_user     => $repo_user,
-    repo_pass     => $repo_pass,
-    repo_path     => $repo_path,
-    repo_resource => $repo_resource,
-    cluster       => $cluster,
-    jetty         => $jetty,
-    apache        => $apache,
-    server_alias  => $server_alias,
-    kibana_server => $kibana_server,
-    template      => $template
+    repo_scheme           => $repo_scheme,
+    repo_domain           => $repo_domain,
+    repo_port             => $repo_port,
+    repo_user             => $repo_user,
+    repo_pass             => $repo_pass,
+    repo_path             => $repo_path,
+    repo_resource         => $repo_resource,
+    cluster               => $cluster,
+    jetty                 => $jetty,
+    apache                => $apache,
+    server_alias          => $server_alias,
+    kibana_server         => $kibana_server,
+    template              => $template,
+    aws_access_key_id     => $aws_access_key_id,
+    aws_secret_access_key => $aws_secret_access_key,
+    aws_region            => $aws_region,
+    aws_bucket            => $aws_bucket,
+    backup                => $backup
   }
 }
