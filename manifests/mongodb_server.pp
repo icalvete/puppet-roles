@@ -1,10 +1,12 @@
 class roles::mongodb_server (
 
-  $backup = undef
+  $backup   = undef,
+  $official = true
 
 ) inherits roles {
 
   class {'mongodb':
-    backup => $backup
+    backup  => $backup,
+    official => $official
   }
 }
