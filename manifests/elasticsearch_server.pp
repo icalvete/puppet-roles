@@ -12,7 +12,11 @@ class roles::elasticsearch_server (
   $apache        = undef,
   $server_alias  = undef,
   $kibana_server = undef,
-  $template      = undef
+  $template      = undef,
+  $aws_access_key_id        = undef,
+  $aws_secret_access_key    = undef,
+  $aws_region               = undef,
+  $aws_bucket               = undef,
 
 ) inherits roles {
 
