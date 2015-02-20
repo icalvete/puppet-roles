@@ -27,12 +27,16 @@ class roles::elasticsearch_server (
 
     include roles::apache2_server
 
-    apache2::module { 'proxy':
-      require => Class['roles::apache2_server']
+    if ! defined (Apache2::Module['proxy']) {
+      apache2::module { 'proxy':
+        require => Class['roles::apache2_server']
+      }
     }
 
-    apache2::module { 'proxy_http':
-      require => Class['roles::apache2_server']
+    if ! defined (Apache2::Module['proxy_http']) {
+      apache2::module { 'proxy_http':
+        require => Class['roles::apache2_server']
+      }
     }
 
     $elasticsearch_htpasswd_file = hiera('htpasswd_file')
