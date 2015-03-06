@@ -5,7 +5,7 @@ class roles::rabbitmq_server (
   $repo_port     = false,
   $repo_user     = false,
   $repo_pass     = false,
-  $repo_path     = 'releases/rabbitmq-server/v3.1.5',
+  $repo_path     = 'releases/rabbitmq-server/v3.4.4',
   $repo_resource = undef
 
 ) inherits roles {
