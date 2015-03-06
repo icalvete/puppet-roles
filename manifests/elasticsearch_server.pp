@@ -12,7 +12,12 @@ class roles::elasticsearch_server (
   $apache        = undef,
   $server_alias  = undef,
   $kibana_server = undef,
-  $template      = undef
+  $template      = undef,
+  $aws_access_key_id        = undef,
+  $aws_secret_access_key    = undef,
+  $aws_region               = undef,
+  $aws_bucket               = undef,
+  $backup = undef
 
 ) inherits roles {
 
@@ -22,12 +27,16 @@ class roles::elasticsearch_server (
 
     include roles::apache2_server
 
-    apache2::module { 'proxy':
-      require => Class['roles::apache2_server']
+    if ! defined (Apache2::Module['proxy']) {
+      apache2::module { 'proxy':
+        require => Class['roles::apache2_server']
+      }
     }
 
-    apache2::module { 'proxy_http':
-      require => Class['roles::apache2_server']
+    if ! defined (Apache2::Module['proxy_http']) {
+      apache2::module { 'proxy_http':
+        require => Class['roles::apache2_server']
+      }
     }
 
     $elasticsearch_htpasswd_file = hiera('htpasswd_file')
@@ -43,18 +52,23 @@ class roles::elasticsearch_server (
   }
 
   class {'elasticsearch':
-    repo_scheme   => $repo_scheme,
-    repo_domain   => $repo_domain,
-    repo_port     => $repo_port,
-    repo_user     => $repo_user,
-    repo_pass     => $repo_pass,
-    repo_path     => $repo_path,
-    repo_resource => $repo_resource,
-    cluster       => $cluster,
-    jetty         => $jetty,
-    apache        => $apache,
-    server_alias  => $server_alias,
-    kibana_server => $kibana_server,
-    template      => $template
+    repo_scheme           => $repo_scheme,
+    repo_domain           => $repo_domain,
+    repo_port             => $repo_port,
+    repo_user             => $repo_user,
+    repo_pass             => $repo_pass,
+    repo_path             => $repo_path,
+    repo_resource         => $repo_resource,
+    cluster               => $cluster,
+    jetty                 => $jetty,
+    apache                => $apache,
+    server_alias          => $server_alias,
+    kibana_server         => $kibana_server,
+    template              => $template,
+    aws_access_key_id     => $aws_access_key_id,
+    aws_secret_access_key => $aws_secret_access_key,
+    aws_region            => $aws_region,
+    aws_bucket            => $aws_bucket,
+    backup                => $backup
   }
 }
