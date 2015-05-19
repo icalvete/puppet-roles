@@ -1,21 +1,25 @@
 class roles::apache2_server (
 
-  $ssl               = true,
-  $passenger         = true,
-  $phalcon           = false,
-  $file_uploads      = undef,
-  $file_uploads_size = undef,
-  $wsgi              = undef
+  $ssl                    = true,
+  $passenger              = true,
+  $phalcon                = false,
+  $file_uploads           = undef,
+  $file_uploads_size      = undef,
+  $max_execution_time_cli = undef,
+  $max_execution_time_fpm = undef,
+  $wsgi                   = undef
 
 ) inherits roles {
 
   include apache2
 
   class {'php5':
-    fpm               => true,
-    phalcon           => $phalcon,
-    file_uploads      => $file_uploads,
-    file_uploads_size => $file_uploads_size
+    fpm                     => true,
+    phalcon                 => $phalcon,
+    file_uploads            => $file_uploads,
+    file_uploads_size       => $file_uploads_size,
+    max_execution_time_cli => $max_execution_time_cli,
+    max_execution_time_fpm => $max_execution_time_fpm,
   }
 
   if $ssl {
