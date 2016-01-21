@@ -10,6 +10,11 @@
 
 * [hiera](http://docs.puppetlabs.com/hiera/1/index.html)
 
+### syslog_remote_server
+
+Enable AWS Glacier backup require https://github.com/icalvete/puppet-awstools (included in https://github.com/icalvete?tab=repositories)
+
+
 ##Example:
 
 ```puppet
