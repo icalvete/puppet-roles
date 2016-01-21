@@ -1,0 +1,25 @@
+#!/bin/bash
+
+SOURCE=<%= scope.lookupvar('roles::syslog_remote_server::root_log_dir') %>/<%= scope.lookupvar('roles::syslog_remote_server::log_dir') %>
+
+VAULT=<%= scope.lookupvar('roles::syslog_remote_server::glacier_vault') %>
+
+if [ $1 == 'true' ]; then
+  a=1
+else
+  exit
+fi
+
+/usr/local/bin/aws glacier list-vaults --account-id - | grep $VAULT
+if [ $? -eq 1 ]; then
+  /usr/local/bin/aws glacier create-vault --account-id - --vault-name $VAULT
+fi
+
+for a in {3..5}; do
+  FILE=${SOURCE}/local${a}_<%= scope.lookupvar('roles::syslog_remote_server::log_dir') %>.log.1.gz
+  TIMESTAMP=`stat -c %Y ${FILE}`
+  DATE=`date -d @${TIMESTAMP} +"%Y/%m/%d %H:%M:%S"`
+  DESC="${DATE}/LOCAL${a}.gz"
+  checksum=`/usr/bin/sha256sum $FILE | awk '{printf $1 }'`
+  /usr/local/bin/aws glacier upload-archive --account-id - --vault-name $VAULT --archive-description "$DESC" --checksum "$checksum" --body $FILE
+done
