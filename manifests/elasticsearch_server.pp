@@ -1,19 +1,44 @@
 class roles::elasticsearch_server (
 
-  $status           = 'enabled',
-  $manage_repo      = true,
-  $repo_version     = '2.x',
-  $version          = false,
-  $java_install     = true,
-  $cluster_name     = 'clustername',
-  $default_template = undef,
-  $default_script   = undef,
-  $bind_host        = $ipaddress,
-  $publish_host     = $ipaddress,
-  $hosts            = [$ipaddress]
+  $status               = 'enabled',
+  $manage_repo          = true,
+  $repo_version         = '2.x',
+  $version              = false,
+  $java_install         = true,
+  $cluster_name         = 'clustername',
+  $bind_host            = $ipaddress,
+  $publish_host         = $ipaddress,
+  $hosts                = [$ipaddress],
+  $data_path            = "/var/lib/elasticsearch-${hostname}",
+  $minimum_master_nodes = 1,
+  $recover_after_nodes  = 1,
+  $expected_nodes       = 1,
+  $recover_after_time   = '5m',
+  $default_template     = undef,
+  $default_script       = undef,
 
 ) inherits roles {
+  
+  limits::fragment {
+    '*/soft/memlock': value => 'unlimited';
+    '*/hard/memlock': value => 'unlimited';
+  }
+  
+  limits::fragment {
+    '*/soft/nofile': value => 65536;
+    '*/hard/nofile': value => 65536;
+  }
 
+  limits::fragment {
+    'elasticsearch/soft/memlock': value => 'unlimited';
+    'elasticsearch/hard/memlock': value => 'unlimited';
+  }
+  
+  limits::fragment {
+    'elasticsearch/soft/nofile': value => 65536;
+    'elasticsearch/hard/nofile': value => 65536;
+  }
+  
   class { 'elasticsearch':
     status                                   => $status,
     manage_repo                              => $manage_repo,
@@ -26,20 +51,37 @@ class roles::elasticsearch_server (
       'cluster.name'                         => $cluster_name,
       'discovery.zen.ping.unicast.hosts'     => $hosts,
       'discovery.zen.ping.multicast.enabled' => false,
+      'hostname'                             => $hostname,
+      'node.name'                            => $hostname,
       'index.store.type'                     => 'niofs',
       'index.store.compress.stored'          => true,
       'bootstrap.mlockall'                   => true,
       'http.compression'                     => true,
-      'transport.tcp.compress'               => true
-    },
+      'transport.tcp.compress'               => true,
+      'discovery.zen.minimum_master_nodes'   => $minimum_master_nodes,
+      'gateway.recover_after_nodes'          => $recover_after_nodes,
+      'gateway.expected_nodes'               => $expected_nodes,
+      'gateway.recover_after_time'           => $recover_after_time
+    }
   }
 
-  #'node.name'                        => $hostname,
-  elasticsearch::instance { $hostname: }
+  $memory4es = floor($memorysize_mb) / 2
+
+  common::add_env { 'ES_HEAP_SIZE':
+    key     => 'ES_HEAP_SIZE',
+    value   => "${memory4es}M",
+    require => Class['common']
+  }
+
+  elasticsearch::instance { $hostname:
+    datadir => $data_path,
+    require => Common::Add_env['ES_HEAP_SIZE']
+  }
 
   if  $default_template {
     elasticsearch::template { 'elasticsearch_template':
       ensure => 'present',
+      host   => $publish_host,
       file   => $default_template
     }
   }
@@ -47,6 +89,7 @@ class roles::elasticsearch_server (
   if $default_script {
     elasticsearch::script { 'script_template':
       ensure => 'present',
+      host   => $publish_host,
       source => $default_script
     }
   }
