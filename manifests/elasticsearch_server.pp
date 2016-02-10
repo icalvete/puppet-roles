@@ -16,6 +16,7 @@ class roles::elasticsearch_server (
   $recover_after_time   = '5m',
   $default_template     = undef,
   $default_script       = undef,
+  $memory4es            = floor($memorysize_mb) / 2
 
 ) inherits roles {
   
@@ -64,8 +65,6 @@ class roles::elasticsearch_server (
       'gateway.recover_after_time'           => $recover_after_time
     }
   }
-
-  $memory4es = floor($memorysize_mb) / 2
 
   common::add_env { 'ES_HEAP_SIZE':
     key     => 'ES_HEAP_SIZE',

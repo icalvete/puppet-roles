@@ -17,8 +17,14 @@ fi
 
 for a in {3..5}; do
   FILE=${SOURCE}/local${a}_<%= scope.lookupvar('roles::syslog_remote_server::log_dir') %>.log.1.gz
+
+  # Waiting until compress
+  while [ ! -f $FILE ]; do
+            a=1
+  done
+
   TIMESTAMP=`stat -c %Y ${FILE}`
-  DATE=`date -d @${TIMESTAMP} +"%Y/%m/%d %H:%M:%S"`
+  DATE=`date -d @${TIMESTAMP} +"%Y/%m/%d/%H:%M:%S"`
   DESC="${DATE}/LOCAL${a}.gz"
   checksum=`/usr/bin/sha256sum $FILE | awk '{printf $1 }'`
   /usr/local/bin/aws glacier upload-archive --account-id - --vault-name $VAULT --archive-description "$DESC" --checksum "$checksum" --body $FILE

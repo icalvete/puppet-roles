@@ -1,6 +1,6 @@
 class roles::kibana_server (
 
-  $kibana_version = '4',
+  $kibana_version = '4.4',
   $org_domain     = undef,
   $server_alias   = undef,
   $repo_scheme    = 'https',
@@ -18,16 +18,22 @@ class roles::kibana_server (
 
   case $kibana_version {
     '3': {
-      $repo_resource = 'kibana-3.1.0.tar.gz'
+      $repo_resource    = 'kibana-3.1.0.tar.gz'
+      $manifest_version = 3
+    }
+    '4': {
+      $repo_resource    = 'kibana-4.0.0-linux-x64.tar.gz'
+      $manifest_version = 4
     }
     default: {
-      $repo_resource = 'kibana-4.0.0-linux-x64.tar.gz'
+      $repo_resource    = 'kibana-4.4.0-linux-x64.tar.gz'
+      $manifest_version = 4
     }
   }
 
   include roles::apache2_server
 
-  class {"kibana${kibana_version}":
+  class {"kibana${$manifest_version}":
     org_domain                => $org_domain,
     server_alias              => $server_alias,
     repo_scheme               => $repo_scheme,
@@ -39,6 +45,7 @@ class roles::kibana_server (
     repo_resource             => $repo_resource,
     elasticsearch_server      => $elasticsearch_server,
     elasticsearch_server_auth => $elasticsearch_server_auth,
+    config_version            => $kibana_version,
     require                   => Class['roles::apache2_server']
   }
 }

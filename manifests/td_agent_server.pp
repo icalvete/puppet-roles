@@ -1,8 +1,9 @@
 class roles::td_agent_server (
 
-  $config_template    = undef,
   $elasticsearch_host = undef,
+  $elasticsearch_port = 9200,
   $main_config        = undef,
+  $config_template    = undef,
 
 ) inherits roles {
 
