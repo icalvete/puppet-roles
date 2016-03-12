@@ -14,7 +14,7 @@ class roles::elasticsearch_server (
   $recover_after_nodes  = 1,
   $expected_nodes       = 1,
   $recover_after_time   = '5m',
-  $default_template     = undef,
+  $default_template     = 'puppet:///modules/roles/elasticsearch/logstash_template_no_cluster.json',
   $default_script       = undef,
   $memory4es            = floor($memorysize_mb) / 2
 
