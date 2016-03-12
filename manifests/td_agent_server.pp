@@ -5,7 +5,7 @@ class roles::td_agent_server (
   $elasticsearch_port  = 9200,
   $fluentd_remote_port = 5514,
   $main_config         = 'fluentd/sp.conf.erb',
-  $config_template     = undef,
+  $config_template     = ['fluentd/sp_l4.conf', 'fluentd/sp_l5.conf'],
 
 ) inherits roles {
 
