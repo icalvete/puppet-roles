@@ -1,0 +1,52 @@
+<?php
+
+function call_curl($url, $method='GET')
+{
+  // create a new cURL resource
+  $ch = curl_init();
+
+  // set URL and other appropriate options
+  curl_setopt($ch, CURLOPT_URL, $url);
+  curl_setopt($ch, CURLOPT_HEADER, 0);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  if ($method == 'DELETE') {
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+  }
+  
+  // grab URL and pass it to the browser
+  $res = curl_exec($ch);
+  curl_close($ch);
+  return $res;
+}
+
+function get_from_elasticsearch($url)
+{
+  return call_curl($url);
+}
+
+function del_to_elasticsearch($url)
+{
+  return call_curl($url, 'DELETE');
+}
+
+$indices_stats = get_from_elasticsearch('http://<%=  @elasticsearch_host -%>:9200/_stats');
+$obj_node_stats = json_decode($indices_stats);
+
+$today=date('Y-m-d', time());
+foreach ($obj_node_stats->indices as $key => $value ) {
+  
+  $match = preg_match('/<%=  @regexp -%>/', $key, $matches);
+  if ($match) {
+    $index = $matches[2].'-'.$matches[3].'-'.$matches[4];
+    $index_date = date_create($index);
+    $today_date = date_create($today);
+    $interval = date_diff($index_date, $today_date);
+    if ((int) $interval->format('%a') >= <%= @max_age -%> ) {
+      $url = "http://<%=  @elasticsearch_host -%>:9200/$key/";
+      del_to_elasticsearch($url);
+    }
+  }
+}
+
+// close cURL resource, and free up system resources
+?>
