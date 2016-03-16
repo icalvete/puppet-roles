@@ -69,7 +69,6 @@ class roles::elasticsearch_server (
   common::add_env { 'ES_HEAP_SIZE':
     key     => 'ES_HEAP_SIZE',
     value   => "${memory4es}M",
-    require => Class['common']
   }
 
   elasticsearch::instance { $hostname:
