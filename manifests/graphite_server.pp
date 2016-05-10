@@ -1,92 +1,32 @@
 class roles::graphite_server (
 
-  $org_domain    = undef,
-  $server_name   = undef,
-  $server_alias  = ['graphite'],
-  $htpasswd_file = hiera('htpasswd_file'),
-  $htpasswd_user = 'graphite',
-  $htpasswd_pass = 'gr4ph1t3',
-  $amqp_host     = hiera('graphite_amqp_server'),
-  $amqp_port     = hiera('graphite_amqp_port'),
-  $amqp_user     = hiera('graphite_amqp_user'),
-  $amqp_password = hiera('graphite_amqp_pass'),
-  $ldap          = false
+  $server_name = undef
 
 ) {
-
-  include graphite::params
-
-  exec {'graphite_document_root':
-    command => "/bin/mkdir -p ${graphite::params::install_path}/${graphite::params::graphite_dirname}/webapp",
-    unless  => "/usr/bin/test -d ${graphite::params::install_path}/${graphite::params::graphite_dirname}/webapp",
-    before  => Class['roles::apache2_server']
-  }
-
-  exec {'graphite_log_root':
-    command => "/bin/mkdir -p ${graphite::params::install_path}/${graphite::params::graphite_dirname}/storage/log/webapp",
-    unless  => "/usr/bin/test -d ${graphite::params::install_path}/${graphite::params::graphite_dirname}/storage/log/webapp",
-    before  => Class['roles::apache2_server']
-  }
-
   include roles::apache2_server
 
   apache2::module { 'wsgi':
     package => 'libapache2-mod-wsgi',
-    before  => Anchor['role::graphite_server::begin'],
     require => Class['roles::apache2_server']
   }
 
-  apache2::site{'graphite.vhost.conf':
-    source              => 'graphite/web/apache2/graphite.vhost.conf.erb',
-    include_from_source => 'graphite::params',
-    require             => Class['roles::apache2_server', 'graphite::web']
+  include graphite::params
+
+  class {'graphite':
+    gr_web_server     => 'none',
+    gr_web_user       => $::graphite::params::apache_web_user,
+    gr_web_group      => $::graphite::params::apache_web_group,
+    gr_web_servername => $server_name
   }
 
   apache2::alias{'graphite_alias':
-    content => 'Alias /graphite /srv/graphite/webapp',
-    before  => Anchor['role::graphite_server::begin']
+    content => "Alias /graphite ${::graphite::gr_base_dir}/webapp",
+    before  => Class['graphite']
   }
-
-  htpasswd::user {$htpasswd_user:
-    file     => $htpasswd_file,
-    password => $htpasswd_pass,
-    before   => Anchor['role::graphite_server::begin'],
-    require  => Apache2::Module['wsgi']
-  }
-
-  anchor { 'role::graphite_server::begin':
-    before => Class['graphite::whisper']
-  }
-
-  class {'graphite::whisper':
-    require => Anchor['role::graphite_server::begin']
-  }
-
-  class {'graphite::carbon':
-    amqp_enabled  => true,
-    amqp_host     => $amqp_host,
-    amqp_port     => $amqp_port,
-    amqp_user     => $amqp_user,
-    amqp_password => $amqp_password,
-    amqp_vhost    => '/',
-    amqp_exchange => 'graphite',
-    require       => Class['graphite::whisper']
-  }
-
-  class {'graphite::web':
-    server_name  => $server_name,
-    server_alias => $server_alias,
-    ldap         => $ldap,
-    require      => Class['graphite::carbon']
-  }
-
-  graphite::carbon::retentions { 'matcher_retention':
-    pattern    => '^matcher\..*\.stats\..*',
-    retentions => '1d:5y',
-    require    => Class['graphite::whisper'],
-  }
-
-  anchor { 'role::graphite_server::end':
-    require => Class['graphite::web']
+  
+  apache2::site{'graphite.vhost.conf':
+    source              => "${module_name}/graphite/web/apache2/graphite.vhost.conf.erb",
+    include_from_source => 'graphite::params',
+    require             => Class['roles::apache2_server', 'graphite']
   }
 }
