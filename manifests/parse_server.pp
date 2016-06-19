@@ -13,9 +13,9 @@ class roles::parse_server (
     fail('master_key must be a string')
   }
 
-   include nodejs
+  include nodejs
 
-   class {'parse_platform':
+  class {'parse_platform':
     application_id => $application_id,
     master_key     => $master_key,
     require        => Class['nodejs']
