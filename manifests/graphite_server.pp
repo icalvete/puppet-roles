@@ -25,7 +25,7 @@ class roles::graphite_server (
     content => "Alias /graphite ${::graphite::gr_base_dir}/webapp",
     before  => Class['graphite']
   }
-  
+
   apache2::site{'graphite.vhost.conf':
     source              => "${module_name}/graphite/web/apache2/graphite.vhost.conf.erb",
     include_from_source => 'graphite::params',
