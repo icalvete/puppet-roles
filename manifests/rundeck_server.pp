@@ -22,7 +22,7 @@ class roles::rundeck_server (
     'framework.server.username' => $username,
     'framework.server.password' => $password,
   }
-  
+
   $auth_config = {
     'file' => {
       'admin_user'     => $username,
