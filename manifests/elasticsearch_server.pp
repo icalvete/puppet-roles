@@ -20,12 +20,12 @@ class roles::elasticsearch_server (
   $memory4es            = floor($memorysize_mb) / 2
 
 ) inherits roles {
-  
+
   limits::fragment {
     '*/soft/memlock': value => 'unlimited';
     '*/hard/memlock': value => 'unlimited';
   }
-  
+
   limits::fragment {
     '*/soft/nofile': value => 65536;
     '*/hard/nofile': value => 65536;
@@ -35,12 +35,12 @@ class roles::elasticsearch_server (
     'elasticsearch/soft/memlock': value => 'unlimited';
     'elasticsearch/hard/memlock': value => 'unlimited';
   }
-  
+
   limits::fragment {
     'elasticsearch/soft/nofile': value => 65536;
     'elasticsearch/hard/nofile': value => 65536;
   }
-  
+
   class { 'elasticsearch':
     status                                   => $status,
     manage_repo                              => $manage_repo,
