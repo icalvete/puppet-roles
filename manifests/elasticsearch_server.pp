@@ -10,6 +10,7 @@ class roles::elasticsearch_server (
   $publish_host         = $ipaddress,
   $hosts                = [$ipaddress],
   $data_path            = "/var/lib/elasticsearch-${hostname}",
+  $repo_path            = '/var/lib/elasticsearch',
   $minimum_master_nodes = 1,
   $recover_after_nodes  = 1,
   $expected_nodes       = 1,
@@ -62,7 +63,8 @@ class roles::elasticsearch_server (
       'discovery.zen.minimum_master_nodes'   => $minimum_master_nodes,
       'gateway.recover_after_nodes'          => $recover_after_nodes,
       'gateway.expected_nodes'               => $expected_nodes,
-      'gateway.recover_after_time'           => $recover_after_time
+      'gateway.recover_after_time'           => $recover_after_time,
+      'path.repo'                            => $repo_path
     }
   }
 
