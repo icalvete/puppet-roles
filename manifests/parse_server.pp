@@ -15,7 +15,7 @@ class roles::parse_server (
 
   include nodejs
 
-  class {'parse_platform':
+  class {'parse_platform::server':
     application_id => $application_id,
     master_key     => $master_key,
     require        => Class['nodejs']
