@@ -1,10 +1,10 @@
 class roles::kibana_server (
 
-  $kibana_version = '4.4',
+  $kibana_version = '4.5',
   $org_domain     = undef,
   $server_alias   = undef,
   $repo_scheme    = 'https',
-  $repo_domain    = 'download.elasticsearch.org',
+  $repo_domain    = 'download.elastic.co',
   $repo_port      = false,
   $repo_user      = false,
   $repo_pass      = false,
@@ -25,8 +25,12 @@ class roles::kibana_server (
       $repo_resource    = 'kibana-4.0.0-linux-x64.tar.gz'
       $manifest_version = 4
     }
-    default: {
+    '4.4': {
       $repo_resource    = 'kibana-4.4.0-linux-x64.tar.gz'
+      $manifest_version = 4
+    }
+    default: {
+      $repo_resource    = 'kibana-4.5.1-linux-x64.tar.gz'
       $manifest_version = 4
     }
   }

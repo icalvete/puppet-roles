@@ -5,7 +5,7 @@ define roles::elasticsearch_server::clean_indexes (
   $max_age = 31
 
 ) {
-  
+
   $path = "/root/${name}_clean_indexes.php"
 
   file { "${name}_clean_indexes_script":
