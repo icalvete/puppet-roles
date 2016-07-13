@@ -6,7 +6,10 @@ class roles::mongodb_server (
   $verbose             = false,
   $backup              = true,
   $backup_dir          = '/srv',
-  $backup_retention    = 7
+  $backup_retention    = 7,
+  $replset             = undef,
+  $nojournal           = undef,
+  $smallfiles          = undef
 
 ) inherits roles {
 
@@ -22,8 +25,11 @@ class roles::mongodb_server (
   }->
   class {'::mongodb::client': }->
   class {'::mongodb':
-    verbose => $verbose,
-    require => Class['mongodb::globals']
+    verbose    => $verbose,
+    replset    => $replset,
+    nojournal  => $nojournal,
+    smallfiles => $smallfiles,
+    require    => Class['mongodb::globals']
   }
 
   package { 'mongodb-org-tools':
