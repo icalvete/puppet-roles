@@ -5,9 +5,8 @@ define roles::mongodb_server::load_script (
 
 ) {
 
-  include mongodb
-
   $script_source = $script['source']
+  $script_target = "/tmp/${name}.js"
   $script_file   = $script['file']
 
   notice($script['source'])
@@ -25,21 +24,23 @@ define roles::mongodb_server::load_script (
   if $script_file =~ /\.erb$/ {
 
     file {"load_script_${name}":
-      path    => "/tmp/${script_file}",
+      path    => $script_target,
       content => template("${script_source}/${script_file}"),
     }
   }else{
 
     file {"load_script_${name}":
-      path   => "/tmp/${script_file}",
+      path   => $script_target,
       source => "puppet:///modules/${script_source}/${script_file}",
     }
   }
 
   exec {"load_scriptscript_${name}":
-    cwd     => '/tmp/',
-    command => "/usr/bin/mongo /tmp/${script_file}",
-    require => [File["load_script_${name}"], Service['mongodb']],
-    unless  => $unless
+    cwd       => '/tmp/',
+    command   => "/usr/bin/mongo ${script_target}",
+    require   => [File["load_script_${name}"], Service['mongodb']],
+    unless    => $unless,
+    tries     => 5,
+    try_sleep => 5
   }
 }
