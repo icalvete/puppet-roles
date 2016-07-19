@@ -9,7 +9,9 @@ class roles::mongodb_server (
   $backup_retention    = 7,
   $replset             = undef,
   $nojournal           = undef,
-  $smallfiles          = undef
+  $smallfiles          = undef,
+  $pidfilepath         = '/var/run/mongodb.pid',
+  $set_parameter       = undef
 
 ) inherits roles {
 
@@ -18,19 +20,27 @@ class roles::mongodb_server (
   validate_bool($verbose)
   validate_bool($backup)
 
-  class {'::mongodb::globals':
-    version             => $version,
-    manage_package_repo => $manage_package_repo,
-    bind_ip             => $bind_ip
-  }->
-  class {'::mongodb::client': }->
-  class {'::mongodb':
-    verbose    => $verbose,
-    replset    => $replset,
-    nojournal  => $nojournal,
-    smallfiles => $smallfiles,
-    require    => Class['mongodb::globals']
+  apt::key { 'mongodb-org-tools_key':
+    id     => 'D68FA50FEA312927',
+    server => 'keyserver.ubuntu.com',
+    before => Package['mongodb-org-tools']
   }
+
+  class {'::mongodb::globals':
+    version             => '3.2.7',
+    manage_package_repo => true,
+    bind_ip             => '0.0.0.0',
+    pidfilepath         => $pidfilepath,
+    }->
+    class {'::mongodb::client': }->
+    class {'::mongodb::server':
+      verbose       => true,
+      replset       => $replset,
+      nojournal     => $nojournal,
+      smallfiles    => $smallfiles,
+      set_parameter => $set_parameter,
+      require       => Class['mongodb::globals']
+    }
 
   package { 'mongodb-org-tools':
     ensure  => present,
