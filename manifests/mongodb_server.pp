@@ -27,7 +27,7 @@ class roles::mongodb_server (
   }
 
   class {'::mongodb::globals':
-    version             => '3.2.7',
+    version             => $version,
     manage_package_repo => true,
     bind_ip             => '0.0.0.0',
     pidfilepath         => $pidfilepath,
