@@ -1,22 +1,31 @@
 class roles::rabbitmq_server (
 
-  $repo_scheme   = 'http',
-  $repo_domain   = 'www.rabbitmq.com',
-  $repo_port     = false,
-  $repo_user     = false,
-  $repo_pass     = false,
-  $repo_path     = 'releases/rabbitmq-server/v3.5.0',
-  $repo_resource = 'rabbitmq-server_3.5.0-1_all.deb'
+  $admin_user = 'admin',
+  $admin_pass = 'admin'
 
 ) inherits roles {
 
-  class {'rabbitmq':
-    repo_scheme   => $repo_scheme,
-    repo_domain   => $repo_domain,
-    repo_port     => $repo_port,
-    repo_user     => $repo_user,
-    repo_pass     => $repo_pass,
-    repo_path     => $repo_path,
-    repo_resource => $repo_resource
+  class { '::rabbitmq':
+    service_manage    => false,
+    port              => '5672',
+    delete_guest_user => true,
+  }
+
+  rabbitmq_user { $admin_user:
+    admin    => true,
+    password => $admin_pass,
+  }
+
+  rabbitmq_user_permissions { "${admin_user}@/":
+    configure_permission => '.*',
+    read_permission      => '.*',
+    write_permission     => '.*',
+  }
+
+  rabbitmq_plugin { 'rabbitmq_management':
+    ensure   => present,
+    require  => Class['rabbitmq::install'],
+    notify   => Class['rabbitmq::service'],
+    provider => 'rabbitmqplugins',
   }
 }
