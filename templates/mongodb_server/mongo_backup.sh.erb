@@ -9,4 +9,4 @@ mv dump $DATE
 /bin/tar cvfj ${DATE}.tar.bz2 $DATE
 /bin/rm -fR $DATE
 
-/usr/bin/find <%= scope.lookupvar('roles::mongodb_server::backup::ackup_dir') -%> -maxdepth 1 -mindepth 1 -type f -mtime +<%= scope.lookupvar('roles::mongodb_server::backu::backup_retention') -%> -exec rm -fR {} \;
+/usr/bin/find $BACKUP_DIR -maxdepth 1 -mindepth 1 -type f -mtime +<%= scope.lookupvar('roles::mongodb_server::backup::backup_retention') -%> -exec rm -fR {} \;
