@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BACKUP_DIR=<%= scope.lookupvar('roles::mongodb_server::backup::backup_dir') %>
+BACKUP_DIR=<%= scope.lookupvar('roles::mongodb_server::backup::backup_dir') %>/mongodb
 DATE=`/bin/date +%Y%m%d%H%M`
 
 cd $BACKUP_DIR

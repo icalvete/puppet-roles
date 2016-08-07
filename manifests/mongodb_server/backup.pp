@@ -7,7 +7,7 @@ class roles::mongodb_server::backup (
 
   file{ 'mongo_backup_dir':
     ensure => directory,
-    path   => "${backup_dir}/mongo",
+    path   => "${backup_dir}/mongodb",
     owner  => 'root',
     group  => 'root',
     mode   => '0755',
