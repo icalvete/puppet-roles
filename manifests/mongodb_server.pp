@@ -11,7 +11,9 @@ class roles::mongodb_server (
   $nojournal           = undef,
   $smallfiles          = undef,
   $pidfilepath         = '/var/run/mongodb.pid',
-  $set_parameter       = undef
+  $set_parameter       = undef,
+  $nohttpinterface     = false,
+  $rest= true
 
 ) inherits roles {
 
@@ -34,12 +36,14 @@ class roles::mongodb_server (
     }->
     class {'::mongodb::client': }->
     class {'::mongodb::server':
-      verbose       => true,
-      replset       => $replset,
-      nojournal     => $nojournal,
-      smallfiles    => $smallfiles,
-      set_parameter => $set_parameter,
-      require       => Class['mongodb::globals']
+      verbose         => true,
+      replset         => $replset,
+      nojournal       => $nojournal,
+      smallfiles      => $smallfiles,
+      set_parameter   => $set_parameter,
+      nohttpinterface => $nohttpinterface,
+      rest            => $rest,
+      require         => Class['mongodb::globals']
     }
 
   package { 'mongodb-org-tools':
