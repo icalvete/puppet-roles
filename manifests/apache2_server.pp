@@ -3,6 +3,8 @@ class roles::apache2_server (
   $ssl                    = true,
   $passenger              = true,
   $phalcon                = false,
+  $opcache                = false,
+  $opcache_blacklist      = undef,
   $file_uploads           = undef,
   $file_uploads_size      = undef,
   $max_execution_time_cli = undef,
@@ -18,6 +20,8 @@ class roles::apache2_server (
   class {'php5':
     fpm                    => true,
     phalcon                => $phalcon,
+    opcache                => $opcache,
+    opcache_blacklist      => $opcache_blacklist,
     file_uploads           => $file_uploads,
     file_uploads_size      => $file_uploads_size,
     max_execution_time_cli => $max_execution_time_cli,
