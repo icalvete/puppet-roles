@@ -4,6 +4,9 @@ class roles::mongodb_server (
   $bind_ip             = '0.0.0.0',
   $manage_package_repo = true,
   $verbose             = false,
+  $auth                = undef,
+  $keyfile             = undef,
+  $key                 = undef,
   $backup              = true,
   $backup_dir          = '/srv',
   $backup_retention    = 7,
@@ -13,7 +16,7 @@ class roles::mongodb_server (
   $pidfilepath         = '/var/run/mongodb.pid',
   $set_parameter       = undef,
   $nohttpinterface     = false,
-  $rest= true
+  $rest                = true
 
 ) inherits roles {
 
@@ -37,6 +40,9 @@ class roles::mongodb_server (
     class {'::mongodb::client': }->
     class {'::mongodb::server':
       verbose         => true,
+      auth            => $auth,
+      keyfile         => $keyfile,
+      key             => $key,
       replset         => $replset,
       nojournal       => $nojournal,
       smallfiles      => $smallfiles,
