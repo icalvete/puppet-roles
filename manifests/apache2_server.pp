@@ -1,5 +1,7 @@
 class roles::apache2_server (
 
+  $opcache                = false,
+  $opcache_blacklist      = undef,
   $file_uploads           = undef,
   $file_uploads_size      = undef,
   $max_execution_time_cli = undef,

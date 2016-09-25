@@ -4,6 +4,9 @@ class roles::mongodb_server (
   $bind_ip             = '0.0.0.0',
   $manage_package_repo = true,
   $verbose             = false,
+  $auth                = undef,
+  $keyfile             = undef,
+  $key                 = undef,
   $backup              = true,
   $backup_dir          = '/srv',
   $backup_retention    = 7,
@@ -11,7 +14,9 @@ class roles::mongodb_server (
   $nojournal           = undef,
   $smallfiles          = undef,
   $pidfilepath         = '/var/run/mongodb.pid',
-  $set_parameter       = undef
+  $set_parameter       = undef,
+  $nohttpinterface     = false,
+  $rest                = true
 
 ) inherits roles {
 
@@ -34,12 +39,17 @@ class roles::mongodb_server (
     }->
     class {'::mongodb::client': }->
     class {'::mongodb::server':
-      verbose       => true,
-      replset       => $replset,
-      nojournal     => $nojournal,
-      smallfiles    => $smallfiles,
-      set_parameter => $set_parameter,
-      require       => Class['mongodb::globals']
+      verbose         => true,
+      auth            => $auth,
+      keyfile         => $keyfile,
+      key             => $key,
+      replset         => $replset,
+      nojournal       => $nojournal,
+      smallfiles      => $smallfiles,
+      set_parameter   => $set_parameter,
+      nohttpinterface => $nohttpinterface,
+      rest            => $rest,
+      require         => Class['mongodb::globals']
     }
 
   package { 'mongodb-org-tools':
