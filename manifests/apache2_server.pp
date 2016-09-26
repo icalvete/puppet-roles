@@ -16,7 +16,7 @@ class roles::apache2_server (
   $phalcon                = false,
 
 ) inherits roles {
-  
+
   validate_bool($php)
   validate_bool($hhvm)
   validate_bool($ssl)
@@ -45,7 +45,7 @@ class roles::apache2_server (
       memory_limit_cli       => $memory_limit_cli,
       memory_limit_fpm       => $memory_limit_fpm,
     }
-  
+
     if $wsgi {
       apache2::module {'wsgi':
         package => 'libapache2-mod-wsgi',
