@@ -1,7 +1,7 @@
 class roles::tuned {
 
   $nofile = '999999'
-  
+
   limits::fragment {
     'root/soft/nofile': value => $nofile;
     '*/soft/nofile': value    => $nofile;
@@ -117,7 +117,7 @@ class roles::tuned {
     ensure => 'present',
     value  => 10
   }
-  
+
   sysctl::value { 'net.ipv4.tcp_tw_recycle':
     ensure => 'present',
     value  => 0
@@ -140,7 +140,7 @@ class roles::tuned {
     value  => 819200
   }
 
-  # http://simonhf.wordpress.com/2010/10/01/node-js-versus-sxe-hello-world-complexity-speed-and-memory-usage/ 
+  # http://simonhf.wordpress.com/2010/10/01/node-js-versus-sxe-hello-world-complexity-speed-and-memory-usage/
   sysctl::value { 'net.core.somaxconn':
     ensure => 'present',
     value  => 65535
