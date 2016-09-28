@@ -31,7 +31,6 @@ class roles::apache2_server (
 
   validate_bool($ssl)
   validate_bool($passenger)
-  validate_bool($phalcon)
   validate_bool($hhvm)
 
   if $php and $hhvm {
