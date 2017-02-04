@@ -1,10 +1,17 @@
 class roles::mysql_server (
 
-  $s3_backup = false
+  $root_user  = undef,
+  $root_pass  = undef,
+  $backup_dir = undef,
+  $s3_backup  = false
 
 ) inherits roles {
 
+  include mysql::client
+
   class {'mysql::server':
+    root_user => $root_user,
+    root_pass => $root_pass,
     s3_backup => $3_backup,
   }
 }
