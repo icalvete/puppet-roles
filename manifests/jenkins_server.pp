@@ -6,16 +6,13 @@ class roles::jenkins_server (
   $repo_user     = false,
   $repo_pass     = false,
   $repo_resource = undef,
-  $cluster       = false,
+  $admin_user    = undef,
+  $admin_pass    = undef,
   $ldap          = false,
   $ssl           = false,
   $sonar         = false
 
 ) inherits roles {
-
-  if ! $repo_resource {
-    fail('repo_resource parameter must be defined')
-  }
 
   case $::operatingsystem {
     /^(Debian|Ubuntu)$/: {
@@ -37,7 +34,8 @@ class roles::jenkins_server (
     repo_pass     => false,
     repo_path     => $repo_path,
     repo_resource => $repo_resource,
-    cluster       => $cluster,
+    admin_user    => $admin_user,
+    admin_pass    => $admin_pass,
     ldap          => $ldap,
     ssl           => $ssl,
     sonar         => $sonar
