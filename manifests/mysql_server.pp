@@ -10,8 +10,9 @@ class roles::mysql_server (
   include mysql::client
 
   class {'mysql::server':
-    root_user => $root_user,
-    root_pass => $root_pass,
-    s3_backup => $3_backup,
+    root_user  => $root_user,
+    root_pass  => $root_pass,
+    backup_dir => $backup_dir,
+    s3_backup  => $3_backup,
   }
 }
