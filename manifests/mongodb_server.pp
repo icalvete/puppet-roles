@@ -1,6 +1,6 @@
 class roles::mongodb_server (
 
-  $version             = '3.2.8',
+  $version             = '3.4.2',
   $bind_ip             = '0.0.0.0',
   $manage_package_repo = true,
   $verbose             = false,
@@ -16,7 +16,8 @@ class roles::mongodb_server (
   $pidfilepath         = '/var/run/mongodb.pid',
   $set_parameter       = undef,
   $nohttpinterface     = false,
-  $rest                = true
+  $rest                = true,
+  $service_provider    = undef
 
 ) inherits roles {
 
@@ -26,7 +27,7 @@ class roles::mongodb_server (
   validate_bool($backup)
 
   apt::key { 'mongodb-org-tools_key':
-    id     => 'D68FA50FEA312927',
+    id     => '0C49F3730359A14518585931BC711F9BA15703C6',
     server => 'keyserver.ubuntu.com',
     before => Package['mongodb-org-tools']
   }
@@ -39,17 +40,18 @@ class roles::mongodb_server (
     }->
     class {'::mongodb::client': }->
     class {'::mongodb::server':
-      verbose         => true,
-      auth            => $auth,
-      keyfile         => $keyfile,
-      key             => $key,
-      replset         => $replset,
-      nojournal       => $nojournal,
-      smallfiles      => $smallfiles,
-      set_parameter   => $set_parameter,
-      nohttpinterface => $nohttpinterface,
-      rest            => $rest,
-      require         => Class['mongodb::globals']
+      verbose          => true,
+      auth             => $auth,
+      keyfile          => $keyfile,
+      key              => $key,
+      replset          => $replset,
+      nojournal        => $nojournal,
+      smallfiles       => $smallfiles,
+      set_parameter    => $set_parameter,
+      nohttpinterface  => $nohttpinterface,
+      rest             => $rest,
+      service_provider => $service_provider,
+      require          => Class['mongodb::globals']
     }
 
   package { 'mongodb-org-tools':
