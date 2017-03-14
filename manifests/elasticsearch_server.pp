@@ -80,9 +80,9 @@ class roles::elasticsearch_server (
 
   if  $default_template {
     elasticsearch::template { 'elasticsearch_template':
-      ensure => 'present',
-      host   => $publish_host,
-      file   => $default_template
+      ensure   => 'present',
+      api_host => $publish_host,
+      source   => $default_template
     }
   }
 
