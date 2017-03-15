@@ -46,7 +46,7 @@ class roles::elasticsearch_server (
     'network.publish_host' => $publish_host,
     'cluster.name'         => $cluster_name,
   }
-  
+
   $config_2 = {
     'network.bind_host'                    => $bind_host,
     'network.publish_host'                 => $publish_host,
