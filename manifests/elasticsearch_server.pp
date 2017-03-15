@@ -41,31 +41,47 @@ class roles::elasticsearch_server (
     'elasticsearch/hard/nofile': value => 65536;
   }
 
-  class { 'elasticsearch':
-    status                                   => $status,
-    manage_repo                              => $manage_repo,
-    repo_version                             => $repo_version,
-    version                                  => $version,
-    java_install                             => $java_install,
-    config                                   => {
-      'network.bind_host'                    => $bind_host,
-      'network.publish_host'                 => $publish_host,
-      'cluster.name'                         => $cluster_name,
-      'discovery.zen.ping.unicast.hosts'     => $hosts,
-      'discovery.zen.ping.multicast.enabled' => false,
-      'hostname'                             => $hostname,
-      'node.name'                            => $hostname,
-      'index.store.type'                     => 'niofs',
-      'index.store.compress.stored'          => true,
-      'bootstrap.mlockall'                   => true,
-      'http.compression'                     => true,
-      'transport.tcp.compress'               => true,
-      'discovery.zen.minimum_master_nodes'   => $minimum_master_nodes,
-      'gateway.recover_after_nodes'          => $recover_after_nodes,
-      'gateway.expected_nodes'               => $expected_nodes,
-      'gateway.recover_after_time'           => $recover_after_time,
-      'path.repo'                            => $repo_path
+  $config_default = {
+    'network.bind_host'    => $bind_host,
+    'network.publish_host' => $publish_host,
+    'cluster.name'         => $cluster_name,
+  }
+  
+  $config_2 = {
+    'network.bind_host'                    => $bind_host,
+    'network.publish_host'                 => $publish_host,
+    'discovery.zen.ping.unicast.hosts'     => $hosts,
+    'discovery.zen.ping.multicast.enabled' => false,
+    'hostname'                             => $hostname,
+    'node.name'                            => $hostname,
+    'index.store.type'                     => 'niofs',
+    'index.store.compress.stored'          => true,
+    'bootstrap.mlockall'                   => true,
+    'http.compression'                     => true,
+    'transport.tcp.compress'               => true,
+    'discovery.zen.minimum_master_nodes'   => $minimum_master_nodes,
+    'gateway.recover_after_nodes'          => $recover_after_nodes,
+    'gateway.expected_nodes'               => $expected_nodes,
+    'gateway.recover_after_time'           => $recover_after_time,
+    'path.repo'                            => $repo_path
+  }
+
+  case $repo_version {
+    '2.x': {
+      $config = merge($config_default, $config_2)
     }
+    default: {
+      $config = $config_default
+    }
+  }
+
+  class { 'elasticsearch':
+    status       => $status,
+    manage_repo  => $manage_repo,
+    repo_version => $repo_version,
+    version      => $version,
+    java_install => $java_install,
+    config       => $config
   }
 
   common::add_env { 'ES_HEAP_SIZE':
