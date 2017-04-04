@@ -1,4 +1,4 @@
-#puppet-roles
+# puppet-roles
 
  [![Build Status](https://secure.travis-ci.org/icalvete/puppet-roles.png)](http://travis-ci.org/icalvete/puppet-roles)
 
@@ -6,7 +6,7 @@
 
 * Roles usefull for https://github.com/icalvete?tab=repositories
 
-##Requires:
+## Requires:
 
 * [hiera](http://docs.puppetlabs.com/hiera/1/index.html)
 
@@ -15,7 +15,7 @@
 Enable AWS Glacier backup require https://github.com/icalvete/puppet-awstools (included in https://github.com/icalvete?tab=repositories)
 
 
-##Example:
+## Example:
 
 ```puppet
 node 'zoth-ommog.smartpurposes.net' inherits sp_defaults {
@@ -27,6 +27,6 @@ node 'zoth-ommog.smartpurposes.net' inherits sp_defaults {
 }
 ```
 
-##Authors:
+## Authors:
  
  Israel Calvete Talavera <icalvete@gmail.com>
