@@ -10,7 +10,8 @@ class roles::jenkins_server (
   $admin_pass    = undef,
   $ldap          = false,
   $ssl           = false,
-  $sonar         = false
+  $sonar         = false,
+  $keystore      = undef
 
 ) inherits roles {
 
@@ -38,6 +39,7 @@ class roles::jenkins_server (
     admin_pass    => $admin_pass,
     ldap          => $ldap,
     ssl           => $ssl,
-    sonar         => $sonar
+    sonar         => $sonar,
+    keystore      => $keystore
   }
 }
