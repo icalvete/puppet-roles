@@ -53,12 +53,9 @@ class roles::apache2_server (
   }
 
   if $passenger {
-    package {'libapache2-mod-passenger':
-      ensure => present,
-    }
-
     apache2::module {'passenger':
-      require => Class['apache2::install']
+      package =>  'libapache2-mod-passenger',
+        require => Class['apache2::install']
     }
   }
 
