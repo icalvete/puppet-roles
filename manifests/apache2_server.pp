@@ -53,11 +53,8 @@ class roles::apache2_server (
   }
 
   if $passenger {
-    package {'libapache2-mod-passenger':
-      ensure => present,
-    }
-
     apache2::module {'passenger':
+      package =>  'libapache2-mod-passenger',
       require => Class['apache2::install']
     }
   }
@@ -98,7 +95,7 @@ class roles::apache2_server (
   if $wsgi {
     apache2::module {'wsgi':
       package => 'libapache2-mod-wsgi',
-        require => Class['apache2::install']
+      require => Class['apache2::install']
     }
   }
 
