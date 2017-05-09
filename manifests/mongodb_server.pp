@@ -26,6 +26,20 @@ class roles::mongodb_server (
   validate_bool($verbose)
   validate_bool($backup)
 
+  include ::rclocal
+
+  ::rclocal::register{ 'tuned_transparent_hugepage':
+    content => "
+if test -f /sys/kernel/mm/transparent_hugepage/enabled; then
+  echo never > /sys/kernel/mm/transparent_hugepage/enabled
+fi
+
+if test -f /sys/kernel/mm/transparent_hugepage/defrag; then
+  echo never > /sys/kernel/mm/transparent_hugepage/defrag
+fi
+",
+  }
+
   apt::key { 'mongodb-org-tools_key':
     id     => '0C49F3730359A14518585931BC711F9BA15703C6',
     server => 'keyserver.ubuntu.com',
@@ -54,10 +68,10 @@ class roles::mongodb_server (
       require          => Class['mongodb::globals']
     }
 
-  package { 'mongodb-org-tools':
-    ensure  => present,
-    require => Class['mongodb::server']
-  }
+    package { 'mongodb-org-tools':
+      ensure  => present,
+      require => Class['mongodb::server']
+    }
 
   if $backup {
     class {roles::mongodb_server::backup:
@@ -65,4 +79,23 @@ class roles::mongodb_server (
       backup_retention => $backup_retention
     }
   }
+
+  # if auth ...
+
+  # Create root user.
+  #
+  # use admin
+  #
+  # db.createUser(
+  #   {
+  #     user: "root",
+  #     pwd: "password",
+  #     roles: [ "root" ]
+  #   }
+  # )
+  #
+  # rep:PRIMARY> use admin
+  # switched to db admin
+  # rep:PRIMARY> db.createUser({user: "root", pwd: "*******", roles: ["root"]})
+  # Successfully added user: { "user" : "root", "roles" : [ "root" ] }
 }
