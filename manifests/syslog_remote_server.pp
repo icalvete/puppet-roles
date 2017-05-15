@@ -12,7 +12,6 @@ class roles::syslog_remote_server (
         fail('To save logs in glacier, a vault is required.')
   }
 
-
   if $glacier == true {
     file { 'glacier_install_config':
       ensure  => 'present',
@@ -57,97 +56,6 @@ class roles::syslog_remote_server (
     ifempty       => true,
   }
 
-  logrotate::rule { 'apport':
-    path          => "${root_log_dir}/apport.log",
-    rotate        => 7,
-    rotate_every  => 'day',
-    delaycompress => true,
-    compress      => true,
-    ifempty       => false,
-    missingok     => true,
-    su            => true,
-    su_owner      => 'root',
-    su_group      => 'root'
-  }
-
-  logrotate::rule { 'aptitude':
-    path         => "${root_log_dir}/aptitude",
-    rotate       => 6,
-    rotate_every => 'monthly',
-    compress     => true,
-    ifempty      => false,
-    missingok    => true,
-    su           => true,
-    su_owner     => 'root',
-    su_group     => 'root'
-  }
-
-  logrotate::rule { 'btmp':
-    path         => "${root_log_dir}/btmp",
-    compress     => true,
-    create       => true,
-    create_mode  => '0644',
-    create_owner => 'root',
-    create_group => 'utmp',
-    ifempty      => true,
-    missingok    => true,
-    rotate_every => 'monthly',
-    rotate       => 1,
-    su           => true,
-    su_owner     => 'root',
-    su_group     => 'utmp'
-  }
-
-  logrotate::rule { 'wtmp':
-    path         => "${root_log_dir}/wtmp",
-    compress     => true,
-    create       => true,
-    create_mode  => '0644',
-    create_owner => 'root',
-    create_group => 'utmp',
-    ifempty      => true,
-    missingok    => true,
-    rotate_every => 'monthly',
-    rotate       => 1,
-    su           => true,
-    su_owner     => 'root',
-    su_group     => 'utmp'
-  }
-
-  logrotate::rule { 'dpkg':
-    path          => "${root_log_dir}/dpkg.log",
-    rotate_every  => 'monthly',
-    rotate        => 12,
-    compress      => true,
-    delaycompress => true,
-    missingok     => true,
-    ifempty       => false,
-    create        => true,
-    create_mode   => '0644',
-    create_owner  => 'root',
-    create_group  => 'root',
-    su            => true,
-    su_owner      => 'root',
-    su_group      => 'root'
-  }
-
-  logrotate::rule { 'alternatives':
-    path          => "${root_log_dir}/alternatives.log",
-    rotate_every  => 'monthly',
-    rotate        => 12,
-    compress      => true,
-    delaycompress => true,
-    missingok     => true,
-    ifempty       => false,
-    create        => true,
-    create_mode   => '0644',
-    create_owner  => 'root',
-    create_group  => 'root',
-    su            => true,
-    su_owner      => 'root',
-    su_group      => 'root'
-  }
-
   logrotate::rule { 'php5-fpm':
     path          => "${root_log_dir}/php5-fpm.log",
     rotate        => 12,
@@ -157,34 +65,6 @@ class roles::syslog_remote_server (
     compress      => true,
     delaycompress => true,
     postrotate    => '/usr/lib/php5/php5-fpm-reopenlogs',
-    su            => true,
-    su_owner      => 'root',
-    su_group      => 'root'
-  }
-
-  logrotate::rule { 'ppp':
-    path         => "${root_log_dir}/ppp-connect-errors",
-    rotate_every => 'weekly',
-    rotate       => 4,
-    missingok    => true,
-    ifempty      => false,
-    compress     => true,
-    create       => false,
-    su           => true,
-    su_owner     => 'root',
-    su_group     => 'root'
-  }
-
-  logrotate::rule { 'ufw':
-    path          => "${root_log_dir}/ufw.log",
-    rotate        => 4,
-    rotate_every  => 'weekly',
-    missingok     => true,
-    ifempty       => false,
-    compress      => true,
-    delaycompress => true,
-    sharedscripts => true,
-    postrotate    => 'invoke-rc.d rsyslog reload > /dev/null 2>&1 || true',
     su            => true,
     su_owner      => 'root',
     su_group      => 'root'
