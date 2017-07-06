@@ -1,20 +1,21 @@
 class roles::apache2_server (
 
-  $ssl                    = true,
-  $wsgi                   = undef,
-  $passenger              = true,
-  $php                    = true,
-  $phalcon                = false,
-  $hhvm                   = false,
-  $opcache                = false,
-  $opcache_blacklist      = undef,
-  $file_uploads           = undef,
-  $file_uploads_size      = undef,
-  $max_execution_time_cli = undef,
-  $max_execution_time_fpm = undef,
-  $memory_limit_cli       = undef,
-  $memory_limit_fpm       = undef,
-  $server_error_message   = false
+  $ssl                             = true,
+  $wsgi                            = undef,
+  $passenger                       = true,
+  $php                             = true,
+  $phalcon                         = false,
+  $hhvm                            = false,
+  $opcache                         = false,
+  $opcache_blacklist               = undef,
+  $file_uploads                    = undef,
+  $file_uploads_size               = undef,
+  $max_execution_time_cli          = undef,
+  $max_execution_time_fpm          = undef,
+  $memory_limit_cli                = undef,
+  $memory_limit_fpm                = undef,
+  $server_error_message            = false,
+  $memcached_compression_threshold = undef
 
 ) inherits roles {
 
@@ -79,16 +80,17 @@ class roles::apache2_server (
     }
 
     class {"php${$php_version}":
-      fpm                    => true,
-      phalcon                => $phalcon,
-      opcache                => $opcache,
-      opcache_blacklist      => $opcache_blacklist,
-      file_uploads           => $file_uploads,
-      file_uploads_size      => $file_uploads_size,
-      max_execution_time_cli => $max_execution_time_cli,
-      max_execution_time_fpm => $max_execution_time_fpm,
-      memory_limit_cli       => $memory_limit_cli,
-      memory_limit_fpm       => $memory_limit_fpm,
+      fpm                             => true,
+      phalcon                         => $phalcon,
+      opcache                         => $opcache,
+      opcache_blacklist               => $opcache_blacklist,
+      file_uploads                    => $file_uploads,
+      file_uploads_size               => $file_uploads_size,
+      max_execution_time_cli          => $max_execution_time_cli,
+      max_execution_time_fpm          => $max_execution_time_fpm,
+      memory_limit_cli                => $memory_limit_cli,
+      memory_limit_fpm                => $memory_limit_fpm,
+      memcached_compression_threshold => $memcached_compression_threshold
     }
   }
 
