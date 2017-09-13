@@ -1,55 +1,42 @@
 class roles::kibana_server (
 
-  $kibana_version = '4.5',
-  $org_domain     = undef,
-  $server_alias   = undef,
-  $repo_scheme    = 'https',
-  $repo_domain    = 'download.elastic.co',
-  $repo_port      = false,
-  $repo_user      = false,
-  $repo_pass      = false,
-  $repo_path      = 'kibana/kibana',
-
-
-  $elasticsearch_server      = undef,
-  $elasticsearch_server_auth = undef
+  $kibana_version = '5.5.2',
+  $org_domain                = hiera('org_domain', 'example.net'),
+  $kibana_htpasswd_file      = hiera('htpasswd_file', '/etc/apache2/htpasswd'),
+  $kibana_htpasswd_user      = hiera('kibana_user', 'kibana'),
+  $kibana_htpasswd_pass      = hiera('kibana_pass', 'kibana'),
+  $elasticsearch_server      = 'localhost:9200',
 
 ) inherits roles {
 
-  case $kibana_version {
-    '3': {
-      $repo_resource    = 'kibana-3.1.0.tar.gz'
-      $manifest_version = 3
-    }
-    '4': {
-      $repo_resource    = 'kibana-4.0.0-linux-x64.tar.gz'
-      $manifest_version = 4
-    }
-    '4.4': {
-      $repo_resource    = 'kibana-4.4.0-linux-x64.tar.gz'
-      $manifest_version = 4
-    }
-    default: {
-      $repo_resource    = 'kibana-4.5.1-linux-x64.tar.gz'
-      $manifest_version = 4
+  include roles::apache2_server
+
+  if ! defined (Apache2::Module['proxy']) {
+    apache2::module { 'proxy':
+      require =>  Class['roles::apache2_server']
     }
   }
 
-  include roles::apache2_server
+  if ! defined (Apache2::Module['proxy_http']) {
+    apache2::module { 'proxy_http':
+      require =>  Class['roles::apache2_server']
+    }
+  }
 
-  class {"kibana${$manifest_version}":
-    org_domain                => $org_domain,
-    server_alias              => $server_alias,
-    repo_scheme               => $repo_scheme,
-    repo_domain               => $repo_domain,
-    repo_port                 => $repo_port,
-    repo_user                 => $repo_user,
-    repo_pass                 => $repo_pass,
-    repo_path                 => $repo_path,
-    repo_resource             => $repo_resource,
-    elasticsearch_server      => $elasticsearch_server,
-    elasticsearch_server_auth => $elasticsearch_server_auth,
-    config_version            => $kibana_version,
-    require                   => Class['roles::apache2_server']
+  htpasswd::user { $kibana_htpasswd_user:
+    file     => $kibana_htpasswd_file,
+    password => $kibana_htpasswd_pass,
+  }
+
+  apache2::site{'kibana_vhost':
+    source  => "${module_name}/kibana_server/web/apache2/kibana.vhost.conf.erb",
+    require => Class['roles::apache2_server']
+  }
+
+  class {'kibana':
+    ensure => $kibana_version,
+    config => {
+      'elasticsearch.url' =>  "http://${elasticsearch_server}",
+    }
   }
 }
