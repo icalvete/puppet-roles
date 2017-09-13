@@ -66,9 +66,26 @@ class roles::elasticsearch_server (
     'path.repo'                            => $repo_path
   }
 
+  $config_5 = {
+    'network.bind_host'                    => $bind_host,
+    'network.publish_host'                 => $publish_host,
+    'discovery.zen.ping.unicast.hosts'     => $hosts,
+    'node.name'                            => $hostname,
+    'http.compression'                     => true,
+    'transport.tcp.compress'               => true,
+    'discovery.zen.minimum_master_nodes'   => $minimum_master_nodes,
+    'gateway.recover_after_nodes'          => $recover_after_nodes,
+    'gateway.expected_nodes'               => $expected_nodes,
+    'gateway.recover_after_time'           => $recover_after_time,
+    'path.repo'                            => $repo_path
+  }
+
   case $repo_version {
     '2.x': {
       $config = merge($config_default, $config_2)
+    }
+    '5.x': {
+      $config = merge($config_default, $config_5)
     }
     default: {
       $config = $config_default
