@@ -5,6 +5,7 @@ define roles::rabbitmq_server::add_user (
   $configure_permission = '.*',
   $read_permission      = '.*',
   $write_permission     = '.*',
+  $vhost                = '/',
 
 ) {
 
@@ -16,7 +17,7 @@ define roles::rabbitmq_server::add_user (
     password => $pass
   }
 
-  rabbitmq_user_permissions { "${user}@/":
+  rabbitmq_user_permissions { "${user}@${vhost}":
     configure_permission => $configure_permission,
     read_permission      => $read_permission,
     write_permission     => $write_permission,
