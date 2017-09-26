@@ -17,7 +17,8 @@ class roles::mongodb_server (
   $set_parameter       = undef,
   $nohttpinterface     = false,
   $rest                = true,
-  $service_provider    = undef
+  $service_provider    = undef,
+  $quiet               = false
 
 ) inherits roles {
 
@@ -54,7 +55,7 @@ fi
     }->
     class {'::mongodb::client': }->
     class {'::mongodb::server':
-      verbose          => true,
+      verbose          => $verbose,
       auth             => $auth,
       keyfile          => $keyfile,
       key              => $key,
@@ -65,6 +66,7 @@ fi
       nohttpinterface  => $nohttpinterface,
       rest             => $rest,
       service_provider => $service_provider,
+      quiet            => $quiet,
       require          => Class['mongodb::globals']
     }
 
