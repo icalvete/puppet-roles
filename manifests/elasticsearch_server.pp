@@ -17,6 +17,7 @@ class roles::elasticsearch_server (
   $recover_after_time   = '5m',
   $default_template     = 'puppet:///modules/roles/elasticsearch/logstash_template_no_cluster.json',
   $default_script       = undef,
+  $jvm_options          = [],
   $memory4es            = floor($memorysize_mb) / 2
 
 ) inherits roles {
@@ -67,17 +68,18 @@ class roles::elasticsearch_server (
   }
 
   $config_5 = {
-    'network.bind_host'                    => $bind_host,
-    'network.publish_host'                 => $publish_host,
-    'discovery.zen.ping.unicast.hosts'     => $hosts,
-    'node.name'                            => $hostname,
-    'http.compression'                     => true,
-    'transport.tcp.compress'               => true,
-    'discovery.zen.minimum_master_nodes'   => $minimum_master_nodes,
-    'gateway.recover_after_nodes'          => $recover_after_nodes,
-    'gateway.expected_nodes'               => $expected_nodes,
-    'gateway.recover_after_time'           => $recover_after_time,
-    'path.repo'                            => $repo_path
+    'network.bind_host'                  => $bind_host,
+    'network.publish_host'               => $publish_host,
+    'discovery.zen.ping.unicast.hosts'   => $hosts,
+    'node.name'                          => $hostname,
+    'index.store.type'                   => 'niofs',
+    'http.compression'                   => true,
+    'transport.tcp.compress'             => true,
+    'discovery.zen.minimum_master_nodes' => $minimum_master_nodes,
+    'gateway.recover_after_nodes'        => $recover_after_nodes,
+    'gateway.expected_nodes'             => $expected_nodes,
+    'gateway.recover_after_time'         => $recover_after_time,
+    'path.repo'                          => $repo_path
   }
 
   case $repo_version {
@@ -98,7 +100,9 @@ class roles::elasticsearch_server (
     repo_version => $repo_version,
     version      => $version,
     java_install => $java_install,
-    config       => $config
+    config       => $config,
+    jvm_options  => $jvm_options
+
   }
 
   common::add_env { 'ES_HEAP_SIZE':
