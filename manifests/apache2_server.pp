@@ -4,8 +4,10 @@ class roles::apache2_server (
   $wsgi                            = undef,
   $passenger                       = true,
   $php                             = true,
+  $fpm_timeout                     = undef,
   $phalcon                         = false,
   $hhvm                            = false,
+  $env                             = $environment,
   $opcache                         = false,
   $opcache_blacklist               = undef,
   $file_uploads                    = undef,
@@ -39,8 +41,10 @@ class roles::apache2_server (
   }
 
   class{'apache2':
-    php  => $php,
-    hhvm => $hhvm
+    php         => $php,
+    hhvm        => $hhvm,
+    fpm_timeout => $fpm_timeout,
+    env         => $env
   }
 
   if $ssl {
