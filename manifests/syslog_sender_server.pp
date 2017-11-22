@@ -1,9 +1,10 @@
 class roles::syslog_sender_server (
 
-$syslog_remote_server = undef,
-$syslog_remote_port   = 514,
+$syslog_remote_server   = undef,
+$syslog_remote_port     = 514,
 $logstash_remote_server = undef,
-$logstash_remote_port   = undef
+$logstash_remote_port   = undef,
+$logstash_protocol      = 'udp'
 
 ) inherits roles {
 
