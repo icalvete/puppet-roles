@@ -7,6 +7,7 @@ class roles::rabbitmq_server (
   $cluster_nodes            = undef,
   $erlang_cookie            = 'A_SECRET_COOKIE_STRING',
   $wipe_db_on_cookie_change = true,
+  $log_level                = 'error'
 
 
 ) inherits roles {
@@ -23,7 +24,10 @@ class roles::rabbitmq_server (
     cluster_node_type        => $cluster_node_type,
     cluster_nodes            => $cluster_nodes,
     erlang_cookie            => $erlang_cookie,
-    wipe_db_on_cookie_change => $wipe_db_on_cookie_change
+    wipe_db_on_cookie_change => $wipe_db_on_cookie_change,
+    config_variables         => {
+      log_levels => "[{connection, ${log_level}}]"
+    }
   }
 
   rabbitmq_user { $admin_user:
