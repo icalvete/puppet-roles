@@ -82,6 +82,20 @@ fi
     }
   }
 
+  logrotate::rule { 'mongod':
+    path          => '/var/log/mongodb/mongodb.log',
+    rotate        => 7,
+    rotate_every  => 'daily',
+    missingok     => true,
+    ifempty       => false,
+    compress      => true,
+    delaycompress => true,
+    postrotate    => '/bin/kill -SIGUSR1 `/bin/cat /var/run/mongodb.pid` > /dev/null 2>&1 || true',
+    su            => true,
+    su_owner      => 'mongodb',
+    su_group      => 'mongodb'
+  }
+
   # if auth ...
 
   # Create root user.
