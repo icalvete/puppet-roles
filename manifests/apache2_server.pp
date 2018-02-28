@@ -23,19 +23,6 @@ class roles::apache2_server (
 
   $allowed_pph_values_msg = 'Allowed values for php are: true ( 5 by default ) | 5 (default) | 7 '
 
-  if (!is_bool($php)) and (!is_integer($php)) and (!is_string($php))  {
-    fail($allowed_pph_values_msg)
-  }
-
-  if is_string($php) {
-    validate_re($php, ['^5$', '^7$'], $allowed_pph_values_msg)
-  }
-
-
-  validate_bool($ssl)
-  validate_bool($passenger)
-  validate_bool($hhvm)
-
   if $php and $hhvm {
       fail('php and hhvm can be true at same time.')
   }

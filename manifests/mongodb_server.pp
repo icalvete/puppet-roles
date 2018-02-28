@@ -22,11 +22,6 @@ class roles::mongodb_server (
 
 ) inherits roles {
 
-  validate_ip_address($bind_ip)
-  validate_bool($manage_package_repo)
-  validate_bool($verbose)
-  validate_bool($backup)
-
   include ::rclocal
 
   ::rclocal::register{ 'tuned_transparent_hugepage':

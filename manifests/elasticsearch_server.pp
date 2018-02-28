@@ -4,7 +4,6 @@ class roles::elasticsearch_server (
   $manage_repo          = true,
   $repo_version         = '2.x',
   $version              = false,
-  $java_install         = true,
   $cluster_name         = 'clustername',
   $bind_host            = $ipaddress,
   $publish_host         = $ipaddress,
@@ -94,12 +93,13 @@ class roles::elasticsearch_server (
     }
   }
 
+  include ::java
+
   class { 'elasticsearch':
     status       => $status,
     manage_repo  => $manage_repo,
     repo_version => $repo_version,
     version      => $version,
-    java_install => $java_install,
     config       => $config,
     jvm_options  => $jvm_options
 
