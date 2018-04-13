@@ -31,7 +31,7 @@ class roles::syslog_remote_server (
 
   logrotate::rule { 'org_logs_local3':
     path          => "${root_log_dir}/${log_dir}/local3*.log",
-    rotate        => 7,
+    rotate        => '7',
     rotate_every  => 'day',
     compress      => true,
     missingok     => true,
@@ -40,7 +40,7 @@ class roles::syslog_remote_server (
 
   logrotate::rule { 'org_logs_local4':
     path          => "${root_log_dir}/${log_dir}/local4*.log",
-    rotate        => 7,
+    rotate        => '7',
     rotate_every  => 'day',
     compress      => true,
     missingok     => true,
@@ -49,7 +49,7 @@ class roles::syslog_remote_server (
 
   logrotate::rule { 'org_logs_local5':
     path          => "${root_log_dir}/${log_dir}/local5*.log",
-    rotate        => 6,
+    rotate        => '6',
     rotate_every  => 'month',
     compress      => true,
     missingok     => true,
@@ -58,7 +58,7 @@ class roles::syslog_remote_server (
 
   logrotate::rule { 'php5-fpm':
     path          => "${root_log_dir}/php5-fpm.log",
-    rotate        => 12,
+    rotate        => '12',
     rotate_every  => 'weekly',
     missingok     => true,
     ifempty       => false,

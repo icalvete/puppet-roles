@@ -21,7 +21,7 @@ class roles::mongodb_server (
   $quiet               = false
 
 ) inherits roles {
-
+  
   include ::rclocal
 
   ::rclocal::register{ 'tuned_transparent_hugepage':
@@ -79,7 +79,7 @@ fi
 
   logrotate::rule { 'mongod':
     path          => '/var/log/mongodb/mongodb.log',
-    rotate        => 7,
+    rotate        => '7',
     rotate_every  => 'daily',
     missingok     => true,
     ifempty       => false,

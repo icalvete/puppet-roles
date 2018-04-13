@@ -1,6 +1,5 @@
 class roles::td_agent_server (
 
-  $config_template     = undef,
   $elasticsearch_host  = undef,
   $elasticsearch_port  = 9200,
   $fluentd_remote_port = 5514,

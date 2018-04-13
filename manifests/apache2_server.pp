@@ -7,7 +7,7 @@ class roles::apache2_server (
   $fpm_timeout                     = undef,
   $phalcon                         = false,
   $hhvm                            = false,
-  $env                             = $environment,
+  $env                             = $::env,
   $opcache                         = false,
   $opcache_blacklist               = undef,
   $file_uploads                    = undef,

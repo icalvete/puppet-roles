@@ -14,7 +14,7 @@
   #CustomLog  ${APACHE_LOG_DIR}/kibana.log common
   #ErrorLog '|/usr/bin/logger -p local3.info -t ::apache::<%= scope.lookupvar('apache2::env') -%>::error'
   ErrorLog  syslog:local3
-  CustomLog '|/usr/bin/logger -p local3.info -t ::apache::<%= scope.lookupvar('apache2::environment') -%>::access' combined_sp_proxy
+  CustomLog '|/usr/bin/logger -p local3.info -t ::apache::<%= scope.lookupvar('apache2::env') -%>::access' combined_sp_proxy
   
   ProxyRequests Off
   ProxyPass / http://localhost:5601/
