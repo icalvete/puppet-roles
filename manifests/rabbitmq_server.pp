@@ -18,7 +18,7 @@ class roles::rabbitmq_server (
 
   class { '::rabbitmq':
     service_manage           => false,
-    port                     => '5672',
+    port                     => 5672,
     delete_guest_user        => true,
     config_cluster           => $config_cluster,
     cluster_node_type        => $cluster_node_type,

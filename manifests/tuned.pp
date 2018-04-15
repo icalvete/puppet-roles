@@ -39,7 +39,7 @@ class roles::tuned {
   # This gives the kernel more memory for tcp
   # which you need with many (100k+) open socket connections
 
-  $buffer_space = "65536 131072 262144"
+  $buffer_space = '65536 131072 262144'
 
   sysctl::value { 'net.ipv4.tcp_mem':
     ensure => 'present',
@@ -55,7 +55,7 @@ class roles::tuned {
   # Increase the read-buffer space allocatable
   sysctl::value { 'net.ipv4.tcp_rmem':
     ensure => 'present',
-    value  => "8192 87380 16777216"
+    value  => '8192 87380 16777216'
   }
   sysctl::value { 'net.ipv4.udp_rmem_min':
     ensure => 'present',
@@ -73,7 +73,7 @@ class roles::tuned {
   # Increase the write-buffer-space allocatable
   sysctl::value { 'net.ipv4.tcp_wmem':
     ensure => 'present',
-    value  => "8192 65536 16777216"
+    value  => '8192 65536 16777216'
   }
   sysctl::value { 'net.ipv4.udp_wmem_min':
     ensure => 'present',

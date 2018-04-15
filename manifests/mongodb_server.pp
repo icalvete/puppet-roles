@@ -21,7 +21,7 @@ class roles::mongodb_server (
   $quiet               = false
 
 ) inherits roles {
-  
+
   include ::rclocal
 
   ::rclocal::register{ 'tuned_transparent_hugepage':

@@ -15,7 +15,7 @@ class roles::syslog_remote_server (
   if $glacier == true {
     file { 'glacier_install_config':
       ensure  => 'present',
-      path    => "/root/bin/glacier.sh",
+      path    => '/root/bin/glacier.sh',
       content => template("${module_name}/syslog_remote_server/glacier.sh.erb"),
       owner   => 'root',
       group   => 'root',
@@ -30,30 +30,30 @@ class roles::syslog_remote_server (
   }
 
   logrotate::rule { 'org_logs_local3':
-    path          => "${root_log_dir}/${log_dir}/local3*.log",
-    rotate        => '7',
-    rotate_every  => 'day',
-    compress      => true,
-    missingok     => true,
-    ifempty       => true,
+    path         => "${root_log_dir}/${log_dir}/local3*.log",
+    rotate       => '7',
+    rotate_every => 'day',
+    compress     => true,
+    missingok    => true,
+    ifempty      => true,
   }
 
   logrotate::rule { 'org_logs_local4':
-    path          => "${root_log_dir}/${log_dir}/local4*.log",
-    rotate        => '7',
-    rotate_every  => 'day',
-    compress      => true,
-    missingok     => true,
-    ifempty       => true,
+    path         => "${root_log_dir}/${log_dir}/local4*.log",
+    rotate       => '7',
+    rotate_every => 'day',
+    compress     => true,
+    missingok    => true,
+    ifempty      => true,
   }
 
   logrotate::rule { 'org_logs_local5':
-    path          => "${root_log_dir}/${log_dir}/local5*.log",
-    rotate        => '6',
-    rotate_every  => 'month',
-    compress      => true,
-    missingok     => true,
-    ifempty       => true,
+    path         => "${root_log_dir}/${log_dir}/local5*.log",
+    rotate       => '6',
+    rotate_every => 'month',
+    compress     => true,
+    missingok    => true,
+    ifempty      => true,
   }
 
   logrotate::rule { 'php5-fpm':
