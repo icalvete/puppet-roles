@@ -6,7 +6,8 @@ class roles::kyototycoon_server (
   $memcached = true,
   $mhost     = undef,
   $sid       = undef,
-  $db_type   = undef
+  $db_type   = undef,
+  $plex_port = undef
 
 ) inherits roles {
 
@@ -15,6 +16,7 @@ class roles::kyototycoon_server (
     memcached => $memcached,
     mhost     => $mhost,
     sid       => $sid,
-    db_type   => $db_type
+    db_type   => $db_type,
+    plex_port => $plex_port
   }
 }

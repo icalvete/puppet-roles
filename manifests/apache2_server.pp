@@ -81,7 +81,7 @@ class roles::apache2_server (
       max_execution_time_fpm          => $max_execution_time_fpm,
       memory_limit_cli                => $memory_limit_cli,
       memory_limit_fpm                => $memory_limit_fpm,
-      memcached_compression_threshold => $memcached_compression_threshold
+      memcached_compression_threshold => $memcached_compression_threshold,
     }
   }
 
