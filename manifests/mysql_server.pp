@@ -1,5 +1,6 @@
 class roles::mysql_server (
 
+  $version    = "5"
   $root_user  = undef,
   $root_pass  = undef,
   $backup_dir = undef,
@@ -8,9 +9,12 @@ class roles::mysql_server (
 
 ) inherits roles {
 
-  include mysql::client
+  class {'mysql::client':
+    version =>  $version
+  }
 
   class {'mysql::server':
+    version    => $version
     root_user  => $root_user,
     root_pass  => $root_pass,
     backup_dir => $backup_dir,
