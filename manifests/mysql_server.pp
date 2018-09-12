@@ -1,6 +1,6 @@
 class roles::mysql_server (
 
-  $version    = "5"
+  $version    = "5",
   $root_user  = undef,
   $root_pass  = undef,
   $backup_dir = undef,
@@ -14,11 +14,11 @@ class roles::mysql_server (
   }
 
   class {'mysql::server':
-    version    => $version
+    version    => $version,
     root_user  => $root_user,
     root_pass  => $root_pass,
     backup_dir => $backup_dir,
-    s3_backup  => $3_backup,
+    s3_backup  => $s3_backup,
     id         => $id
   }
 }
