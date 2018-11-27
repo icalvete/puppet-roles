@@ -61,7 +61,7 @@ class roles::apache2_server (
   if $php {
 
     case $php {
-      5:{ 
+      5:{
           $php_version    = 5
           $php_subversion = 6
         }
