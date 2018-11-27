@@ -4,6 +4,7 @@ class roles::apache2_server (
   $wsgi                            = undef,
   $passenger                       = true,
   $php                             = true,
+  $php_subversion                  = undef,
   $fpm_timeout                     = undef,
   $phalcon                         = false,
   $hhvm                            = false,
@@ -60,7 +61,10 @@ class roles::apache2_server (
   if $php {
 
     case $php {
-      5:{ $php_version = 5 }
+      5:{ 
+          $php_version    = 5
+          $php_subversion = 6
+        }
       7: {
         if $phalcon {
           fail('phalcon isn\'t available in php 7.')
@@ -71,6 +75,7 @@ class roles::apache2_server (
     }
 
     class {"php${$php_version}":
+      version                         => $php_subversion,
       fpm                             => true,
       phalcon                         => $phalcon,
       opcache                         => $opcache,
