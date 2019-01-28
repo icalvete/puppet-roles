@@ -49,8 +49,8 @@ class roles::syslog_remote_server (
 
   logrotate::rule { 'org_logs_local5':
     path         => "${root_log_dir}/${log_dir}/local5*.log",
-    rotate       => '6',
-    rotate_every => 'month',
+    rotate       => '60',
+    rotate_every => 'day',
     compress     => true,
     missingok    => true,
     ifempty      => true,
