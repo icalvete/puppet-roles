@@ -63,9 +63,8 @@ class roles::apache2_server (
     case $php {
       5:{
           $php_version    = 5
-          $php_subversion = 6
         }
-      7: {
+      7:{
         if $phalcon {
           fail('phalcon isn\'t available in php 7.')
         }

@@ -1,11 +1,11 @@
 class roles::kibana_server (
 
-  $kibana_version = '5.5.2',
-  $org_domain                = hiera('org_domain', 'example.net'),
-  $kibana_htpasswd_file      = hiera('htpasswd_file', '/etc/apache2/htpasswd'),
-  $kibana_htpasswd_user      = hiera('kibana_user', 'kibana'),
-  $kibana_htpasswd_pass      = hiera('kibana_pass', 'kibana'),
-  $elasticsearch_server      = 'localhost:9200',
+  $version              = '5.5.2',
+  $org_domain           = hiera('org_domain', 'example.net'),
+  $kibana_htpasswd_file = hiera('htpasswd_file', '/etc/apache2/htpasswd'),
+  $kibana_htpasswd_user = hiera('kibana_user', 'kibana'),
+  $kibana_htpasswd_pass = hiera('kibana_pass', 'kibana'),
+  $elasticsearch_server = 'localhost:9200',
 
 ) inherits roles {
 
@@ -33,9 +33,11 @@ class roles::kibana_server (
     require => Class['roles::apache2_server']
   }
 
+  $repo_version_number = regsubst($version, /^(\d).*/, '\\1')
   class {'kibana':
-    ensure => $kibana_version,
-    config => {
+    ensure       => $version,
+    repo_version => "$repo_version_number.x",
+    config       => {
       'elasticsearch.url' =>  "http://${elasticsearch_server}",
     }
   }
