@@ -88,6 +88,9 @@ class roles::elasticsearch_server (
     '5.x': {
       $config = merge($config_default, $config_5)
     }
+    '6.x': {
+      $config = merge($config_default, $config_5)
+    }
     default: {
       $config = $config_default
     }
@@ -98,7 +101,6 @@ class roles::elasticsearch_server (
   class { 'elasticsearch':
     status       => $status,
     manage_repo  => $manage_repo,
-    repo_version => $repo_version,
     version      => $version,
     config       => $config,
     jvm_options  => $jvm_options
@@ -114,7 +116,6 @@ class roles::elasticsearch_server (
     datadir => $data_path,
     require => Common::Add_env['ES_HEAP_SIZE']
   }
-
   if  $default_template {
     elasticsearch::template { 'elasticsearch_template':
       ensure   => 'present',
@@ -122,7 +123,6 @@ class roles::elasticsearch_server (
       source   => $default_template
     }
   }
-
   if $default_script {
     elasticsearch::script { 'script_template':
       ensure => 'present',

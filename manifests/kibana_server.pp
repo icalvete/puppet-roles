@@ -36,7 +36,6 @@ class roles::kibana_server (
   $repo_version_number = regsubst($version, /^(\d).*/, '\\1')
   class {'kibana':
     ensure       => $version,
-    repo_version => "$repo_version_number.x",
     config       => {
       'elasticsearch.url' =>  "http://${elasticsearch_server}",
     }
