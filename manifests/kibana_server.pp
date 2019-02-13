@@ -33,7 +33,7 @@ class roles::kibana_server (
     require => Class['roles::apache2_server']
   }
 
-  $repo_version_number = regsubst($version, /^(\d).*/, '\\1')
+  #$repo_version_number = regsubst($version, /^(\d).*/, '\\1')
   class {'kibana':
     ensure       => $version,
     config       => {

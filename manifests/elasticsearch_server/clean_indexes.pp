@@ -18,7 +18,7 @@ define roles::elasticsearch_server::clean_indexes (
   }
 
   cron{ "${name}_clean_indexes_cron":
-    command => "/usr/bin/php $path",
+    command => "/usr/bin/php ${path}",
     user    => 'root',
     hour    => 4,
     minute  => 15,

@@ -99,12 +99,11 @@ class roles::elasticsearch_server (
   include ::java
 
   class { 'elasticsearch':
-    status       => $status,
-    manage_repo  => $manage_repo,
-    version      => $version,
-    config       => $config,
-    jvm_options  => $jvm_options
-
+    status      => $status,
+    manage_repo => $manage_repo,
+    version     => $version,
+    config      => $config,
+    jvm_options => $jvm_options
   }
 
   common::add_env { 'ES_HEAP_SIZE':
