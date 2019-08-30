@@ -36,11 +36,18 @@ fi
 ",
   }
 
-  apt::key { 'mongodb-org-tools_key':
+  apt::key { 'mongodb-org-tools_key_3':
     id     => '0C49F3730359A14518585931BC711F9BA15703C6',
     server => 'keyserver.ubuntu.com',
     before => Package['mongodb-org-tools']
   }
+
+  apt::key { 'mongodb-org-tools_key_4':
+    id     => '9DA31620334BD75D9DCB49F368818C72E52529D4',
+    server => 'keyserver.ubuntu.com',
+    before => Package['mongodb-org-tools']
+  }
+
 
   class {'::mongodb::globals':
     version             => $version,
