@@ -1,7 +1,7 @@
 class roles::mongodb_server (
 
   $version             = '3.4.2',
-  $bind_ip             = '0.0.0.0',
+  $bind_ip             = ['0.0.0.0'],
   $manage_package_repo = true,
   $verbose             = false,
   $auth                = undef,
@@ -16,7 +16,7 @@ class roles::mongodb_server (
   $pidfilepath         = '/var/run/mongodb.pid',
   $set_parameter       = undef,
   $nohttpinterface     = false,
-  $rest                = true,
+  $rest                = false,
   $service_provider    = undef,
   $quiet               = false
 
@@ -38,21 +38,26 @@ fi
 
   apt::key { 'mongodb-org-tools_key_3':
     id     => '0C49F3730359A14518585931BC711F9BA15703C6',
-    server => 'keyserver.ubuntu.com',
+    server => 'hkp://keyserver.ubuntu.com:80',
     before => Package['mongodb-org-tools']
   }
 
-  apt::key { 'mongodb-org-tools_key_4':
+  apt::key { 'mongodb-org-tools_key_4.0':
     id     => '9DA31620334BD75D9DCB49F368818C72E52529D4',
-    server => 'keyserver.ubuntu.com',
+    server => 'hkp://keyserver.ubuntu.com:80',
     before => Package['mongodb-org-tools']
   }
 
+  apt::key { 'mongodb-org-tools_key_4.1_4.2':
+    id     => 'E162F504A20CDF15827F718D4B7C549A058F8B6B',
+    server => 'hkp://keyserver.ubuntu.com:80',
+    before => Package['mongodb-org-tools']
+  }
 
   class {'::mongodb::globals':
     version             => $version,
     manage_package_repo => true,
-    bind_ip             => '0.0.0.0',
+    bind_ip             => ['0.0.0.0'],
     pidfilepath         => $pidfilepath,
     }->
     class {'::mongodb::client': }->
