@@ -2,7 +2,7 @@ class roles::elasticsearch_server (
 
   $status               = 'enabled',
   $manage_repo          = true,
-  $repo_version         = '2.x',
+  $repo_version         = '6.x',
   $version              = false,
   $cluster_name         = 'clustername',
   $bind_host            = $ipaddress,
@@ -16,7 +16,11 @@ class roles::elasticsearch_server (
   $recover_after_time   = '5m',
   $default_template     = 'puppet:///modules/roles/elasticsearch/logstash_template_no_cluster.json',
   $default_script       = undef,
-  $jvm_options          = [],
+  $jvm_options          = [
+      '#-XX:+PrintGCDateStamps',
+      '-Xms512m',
+      '-Xmx512m'
+  ],
   $memory4es            = floor($memorysize_mb) / 2
 
 ) inherits roles {
@@ -54,9 +58,9 @@ class roles::elasticsearch_server (
     'discovery.zen.ping.multicast.enabled' => false,
     'hostname'                             => $hostname,
     'node.name'                            => $hostname,
+    'bootstrap.mlockall'                   => true,
     'index.store.type'                     => 'niofs',
     'index.store.compress.stored'          => true,
-    'bootstrap.mlockall'                   => true,
     'http.compression'                     => true,
     'transport.tcp.compress'               => true,
     'discovery.zen.minimum_master_nodes'   => $minimum_master_nodes,
@@ -84,26 +88,40 @@ class roles::elasticsearch_server (
   case $repo_version {
     '2.x': {
       $config = merge($config_default, $config_2)
+      $rv = 2
     }
     '5.x': {
       $config = merge($config_default, $config_5)
+      $rv = 5
     }
     '6.x': {
       $config = merge($config_default, $config_5)
+      $rv = 6
+    }
+    '7.x': {
+      $config = merge($config_default, $config_5)
+      $rv = 7
     }
     default: {
       $config = $config_default
     }
   }
 
-  include ::java
+  #include ::java
+  class { 'java' :
+    package => 'openjdk-8-jdk',
+  }
+
+  class { 'elastic_stack::repo':
+    version => $rv,
+  }
 
   class { 'elasticsearch':
-    status      => $status,
-    manage_repo => $manage_repo,
-    version     => $version,
-    config      => $config,
-    jvm_options => $jvm_options
+    status            => $status,
+    manage_repo       => $manage_repo,
+    version           => $version,
+    config            => $config,
+    jvm_options       => $jvm_options,
   }
 
   common::add_env { 'ES_HEAP_SIZE':
@@ -115,7 +133,7 @@ class roles::elasticsearch_server (
     datadir => $data_path,
     require => Common::Add_env['ES_HEAP_SIZE']
   }
-  if  $default_template {
+  if $default_template {
     elasticsearch::template { 'elasticsearch_template':
       ensure   => 'present',
       api_host => $publish_host,
