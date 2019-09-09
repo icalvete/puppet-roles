@@ -104,6 +104,7 @@ class roles::elasticsearch_server (
     }
     default: {
       $config = $config_default
+      $rv = 6
     }
   }
 
@@ -130,8 +131,10 @@ class roles::elasticsearch_server (
   }
 
   elasticsearch::instance { $hostname:
-    datadir => $data_path,
-    require => Common::Add_env['ES_HEAP_SIZE']
+    datadir       => $data_path,
+    require       => Common::Add_env['ES_HEAP_SIZE'],
+    secrets       => undef,
+    purge_secrets => true
   }
   if $default_template {
     elasticsearch::template { 'elasticsearch_template':
