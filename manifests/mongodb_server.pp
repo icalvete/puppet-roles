@@ -1,6 +1,6 @@
 class roles::mongodb_server (
 
-  $version             = '3.4.2',
+  $version             = '3.6.14',
   $bind_ip             = ['0.0.0.0'],
   $manage_package_repo = true,
   $verbose             = false,
