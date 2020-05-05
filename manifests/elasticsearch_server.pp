@@ -14,8 +14,9 @@ class roles::elasticsearch_server (
   $recover_after_nodes  = 1,
   $expected_nodes       = 1,
   $recover_after_time   = '5m',
-  $default_template     = 'puppet:///modules/roles/elasticsearch/logstash_template_no_cluster.json',
+  $default_template     = 'puppet:///modules/roles/elasticsearch/logstash_template_no_cluster_6plus.json',
   $default_script       = undef,
+  $max_shards_per_node  = 1000,
   $jvm_options          = [
       '#-XX:+PrintGCDateStamps',
       '-Xms512m',
@@ -82,7 +83,8 @@ class roles::elasticsearch_server (
     'gateway.recover_after_nodes'        => $recover_after_nodes,
     'gateway.expected_nodes'             => $expected_nodes,
     'gateway.recover_after_time'         => $recover_after_time,
-    'path.repo'                          => $repo_path
+    'path.repo'                          => $repo_path,
+    'cluster.max_shards_per_node'        => $max_shards_per_node
   }
 
   case $repo_version {
@@ -110,7 +112,12 @@ class roles::elasticsearch_server (
 
   #include ::java
   class { 'java' :
-    package => 'openjdk-8-jdk',
+    package   => 'openjdk-13-jdk',
+  }
+
+  common::add_env { 'JAVA_HOME':
+    key     => 'JAVA_HOME',
+    value   => '/usr/lib/jvm/java-13-openjdk-amd64/'
   }
 
   class { 'elastic_stack::repo':
@@ -136,6 +143,7 @@ class roles::elasticsearch_server (
     secrets       => undef,
     purge_secrets => true
   }
+
   if $default_template {
     elasticsearch::template { 'elasticsearch_template':
       ensure   => 'present',
@@ -150,4 +158,5 @@ class roles::elasticsearch_server (
       source => $default_script
     }
   }
+
 }
