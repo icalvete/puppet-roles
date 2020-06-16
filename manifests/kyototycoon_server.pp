@@ -8,7 +8,7 @@ class roles::kyototycoon_server (
   $sid       = undef,
   $db_type   = undef,
   $plex_port = undef,
-  backup     = false
+  $backup    = false
 
 ) inherits roles {
 
