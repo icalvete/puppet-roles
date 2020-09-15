@@ -17,6 +17,7 @@ class roles::apache2_server (
   $max_execution_time_fpm          = undef,
   $memory_limit_cli                = undef,
   $memory_limit_fpm                = undef,
+  $max_requests_fpm                = undef,
   $server_error_message            = false,
   $memcached_compression_threshold = undef
 
@@ -85,6 +86,7 @@ class roles::apache2_server (
       max_execution_time_fpm          => $max_execution_time_fpm,
       memory_limit_cli                => $memory_limit_cli,
       memory_limit_fpm                => $memory_limit_fpm,
+      max_requests_fpm                => $max_requests_fpm,
       memcached_compression_threshold => $memcached_compression_threshold,
     }
   }
