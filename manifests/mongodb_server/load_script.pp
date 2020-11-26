@@ -38,7 +38,11 @@ define roles::mongodb_server::load_script (
   exec {"load_scriptscript_${name}":
     cwd       => '/tmp/',
     command   => "/usr/bin/mongo ${script_target}",
-    require   => [File["load_script_${name}"], Service['mongodb']],
+    require   => [
+      File["load_script_${name}"],
+      Service['mongodb'],
+      Package['mongodb_client']
+    ],
     unless    => $unless,
     tries     => 5,
     try_sleep => 5

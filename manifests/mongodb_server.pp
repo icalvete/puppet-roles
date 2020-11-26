@@ -36,24 +36,6 @@ fi
 ",
   }
 
-  apt::key { 'mongodb-org-tools_key_3':
-    id     => '0C49F3730359A14518585931BC711F9BA15703C6',
-    server => 'hkp://keyserver.ubuntu.com:80',
-    before => Package['mongodb-org-tools']
-  }
-
-  apt::key { 'mongodb-org-tools_key_4.0':
-    id     => '9DA31620334BD75D9DCB49F368818C72E52529D4',
-    server => 'hkp://keyserver.ubuntu.com:80',
-    before => Package['mongodb-org-tools']
-  }
-
-  apt::key { 'mongodb-org-tools_key_4.1_4.2':
-    id     => 'E162F504A20CDF15827F718D4B7C549A058F8B6B',
-    server => 'hkp://keyserver.ubuntu.com:80',
-    before => Package['mongodb-org-tools']
-  }
-
   class {'::mongodb::globals':
     version             => $version,
     manage_package_repo => true,
@@ -79,7 +61,10 @@ fi
 
     package { 'mongodb-org-tools':
       ensure  => present,
-      require => Class['mongodb::server']
+      require => [
+        Apt::Source['mongodb'],
+        Class['Apt::Update']
+      ]
     }
 
   if $backup {
