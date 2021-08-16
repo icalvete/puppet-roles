@@ -52,7 +52,6 @@ fi
       nojournal        => $nojournal,
       smallfiles       => $smallfiles,
       set_parameter    => $set_parameter,
-      nohttpinterface  => $nohttpinterface,
       rest             => $rest,
       service_provider => $service_provider,
       quiet            => $quiet,
