@@ -71,6 +71,12 @@ class roles::apache2_server (
         }
         $php_version = 7
       }
+      8:{
+        if $phalcon {
+          fail('phalcon isn\'t available in php 8.')
+        }
+        $php_version = 8
+      }
       default: { $php_version = 5 }
     }
 
