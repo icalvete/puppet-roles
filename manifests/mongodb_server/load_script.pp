@@ -1,7 +1,8 @@
 define roles::mongodb_server::load_script (
 
   $script = undef,
-  $unless = undef
+  $unless = undef,
+  $sh     = false
 
 ) {
 
@@ -35,9 +36,23 @@ define roles::mongodb_server::load_script (
     }
   }
 
+  /*
+  *
+  * A partir de ubuntu 22.04 jammy ya no se usa el tradicional ciente de mongo
+  *
+  * El nuevo cliente mongosh tiene algunas variaciones.
+  *
+  */
+
+  if ! $sh {
+    $binarie = '/usr/bin/mongo'
+  } else {
+    $binarie = '/usr/bin/mongosh'
+  }
+
   exec {"load_scriptscript_${name}":
     cwd       => '/tmp/',
-    command   => "/usr/bin/mongo ${script_target}",
+    command   => "${binarie} ${script_target}",
     require   => [
       File["load_script_${name}"],
       Service['mongodb'],

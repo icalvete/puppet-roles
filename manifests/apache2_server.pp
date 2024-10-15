@@ -97,13 +97,6 @@ class roles::apache2_server (
     }
   }
 
-  if $wsgi {
-    apache2::module {'wsgi':
-      package => 'libapache2-mod-wsgi',
-      require => Class['apache2::install']
-    }
-  }
-
   if $hhvm {
     apache2::module {'proxy_fcgi':
       require => [Class['apache2::install'], Class['hhvm']]
