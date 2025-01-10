@@ -1,10 +1,12 @@
 class roles::syslog_remote_server (
 
-  $root_log_dir = hiera('root_log_dir'),
-  $log_dir      = hiera('sp_log_dir'),
-  $log          = hiera('sp_log'),
-  $glacier      = false,
-  $glacier_vault = undef
+  $root_log_dir  = hiera('root_log_dir'),
+  $log_dir       = hiera('sp_log_dir'),
+  $log           = hiera('sp_log'),
+  $glacier       = false,
+  $glacier_vault = undef,
+  $rotate        = '7',
+  $rotate_every  = 'day'
 
 ) inherits roles {
 
@@ -31,8 +33,8 @@ class roles::syslog_remote_server (
 
   logrotate::rule { 'org_logs_local3':
     path         => "${root_log_dir}/${log_dir}/local3*.log",
-    rotate       => '7',
-    rotate_every => 'day',
+    rotate       => $rotate,
+    rotate_every => $rotate_every,
     compress     => true,
     missingok    => true,
     ifempty      => true,
@@ -40,8 +42,8 @@ class roles::syslog_remote_server (
 
   logrotate::rule { 'org_logs_local4':
     path         => "${root_log_dir}/${log_dir}/local4*.log",
-    rotate       => '7',
-    rotate_every => 'day',
+    rotate       => $rotate,
+    rotate_every => $rotate_every,
     compress     => true,
     missingok    => true,
     ifempty      => true,
@@ -49,8 +51,8 @@ class roles::syslog_remote_server (
 
   logrotate::rule { 'org_logs_local5':
     path         => "${root_log_dir}/${log_dir}/local5*.log",
-    rotate       => '60',
-    rotate_every => 'day',
+    rotate       => $rotate,
+    rotate_every => $rotate_every,
     compress     => true,
     missingok    => true,
     ifempty      => true,
